@@ -23,24 +23,6 @@ struct Board {
                 BoardField(row: row, column: column)
             }
         }
-    
-}
-
-class GameViewModel {
-    private var numberOfQueensPicked: Int
-    private var board: Board
-    
-    init(numberOfQueensPicked: Int) {
-        self.numberOfQueensPicked = numberOfQueensPicked
+        
     }
-}
-
-struct GameScreenView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
-}
-
-#Preview {
-    GameScreenView()
 }
