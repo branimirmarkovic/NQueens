@@ -11,7 +11,11 @@ import SwiftUI
 struct NQueensApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            RootView(
+                coordinator: MainCoordinator(),
+                viewFactory: ViewFactory(),
+                applicationEnvironment: ApplicationEnvironment.shared
+            )
         }
     }
 }

@@ -9,3 +9,8 @@ struct GamePosition: Hashable, Equatable {
     let row: Int
     let column: Int
 }
+
+struct NQueenGame {
+    let size: Int
+    let queens: [GamePosition]
+}
