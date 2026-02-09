@@ -11,18 +11,25 @@ import Observation
 
 @Observable
 final class GameBoardViewModel {
+    
     enum Constants {
         static let title = "Board"
         static let availablePositionsTitle = "Available positions"
         static let resetButtonTitle = "Reset"
         static let placementErrorTitle = "Placement error"
+        
+        static let winingTitle = "Congratulations!"
+        static let message = "You solved the puzzle."
+        static let playAgainTitle = "Play again"
+        static let chooseBoardTitle = "Choose different board"
     }
     
     var board: [[BoardPosition]]
     var remainingQueens: Int
     var placementError: BoardPlacementError?
+    var gameSolved: Bool = false
     private var hasStarted = false
-    private let gameEngine: GameController
+    private(set) var gameEngine: GameController
     
     init(
         gameEngine: GameController,
@@ -35,6 +42,7 @@ final class GameBoardViewModel {
     func startGame() {
         guard hasStarted == false else { return } 
         do {
+            resetSolvedState()
             try gameEngine.startGame()
             refresh()
             hasStarted = true
@@ -47,6 +55,7 @@ final class GameBoardViewModel {
         do {
             try gameEngine.toggle(position.toGamePosition())
             refresh()
+            checkIfSolved()
         } catch let error as BoardPlacementError {
             self.placementError = error
         } catch {
@@ -56,6 +65,7 @@ final class GameBoardViewModel {
     
     func resetGame() {
         do {
+            resetSolvedState()
             try gameEngine.resetGame()
             refresh()
         } catch {
@@ -86,6 +96,19 @@ final class GameBoardViewModel {
     private func shouldHighlightAvailablePositions(_ available: Set<GamePosition>, in board: [[BoardPosition]]) -> Bool {
         let totalPositions = board.count * (board.first?.count ?? 0)
         return !available.isEmpty && available.count < totalPositions
+    }
+    
+    private func checkIfSolved() {
+        let isSolved = remainingQueens == 0 && gameEngine.boardSize > 0
+        if isSolved && gameSolved == false {
+            gameSolved = true
+        } else if isSolved == false {
+            gameSolved = false
+        }
+    }
+    
+    private func resetSolvedState() {
+        gameSolved = false
     }
     
     func message(for error: BoardPlacementError) -> String {

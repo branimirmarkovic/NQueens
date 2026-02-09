@@ -5,12 +5,15 @@
 //  Created by Branimir Markovic on 9. 2. 2026..
 //
 
+import Foundation
+
 struct GamePosition: Hashable, Equatable {
     let row: Int
     let column: Int
 }
 
 struct NQueenGame: Hashable, Equatable {
+    let id: UUID
     var size: Int
     var queens: [GamePosition]
 }

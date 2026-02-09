@@ -17,6 +17,8 @@ struct RootView: View {
             viewFactory.rootView()
                 .navigationDestination(for: PushDestination.self) { destination in
                     viewFactory.view(for: destination)
+                }.sheet(item: $coordinator.sheet) { sheet in
+                    viewFactory.view(for: sheet)
                 }
         }.environment(coordinator)
     }

@@ -17,6 +17,13 @@ struct ViewFactory {
         }
     }
     
+    func view(for sheet: SheetDestination) -> some View {
+        switch sheet {
+        case .gameWinner(let viewModel):
+            GameBoardSolvedScreenComposer.compose(viewModel: viewModel)
+        }
+    }
+    
     func rootView() -> some View {
         GameCreationScreenComposer.compose()
     }

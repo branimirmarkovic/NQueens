@@ -1,5 +1,5 @@
 import Observation
-import NQueenEngine
+import Foundation
 
 @Observable
 final class GameCreationViewModel {
@@ -18,7 +18,7 @@ final class GameCreationViewModel {
     var error: Error?
 
     init() {
-        self.game = .init(size: 4, queens: [])
+        self.game = .init(id: .init(), size: 4, queens: [])
     }
     
     var availableSizes: [Int] {

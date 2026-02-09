@@ -3,6 +3,7 @@ import NQueensTheme
 
 struct GameBoardView: View {
     @State var viewModel: GameBoardViewModel
+    @Environment(MainCoordinator.self) var coordinator
     
     var body: some View {
         GeometryReader { proxy in
@@ -29,6 +30,11 @@ struct GameBoardView: View {
         }
         .onAppear(perform: viewModel.startGame)
         .navigationBarTitleDisplayMode(.inline)
+        .onChange(of: viewModel.gameSolved) { oldValue, newValue in
+            if viewModel.gameSolved {
+                coordinator.presentSheet(.gameWinner(viewModel: viewModel))
+            }
+        }
     }
     
     private enum Layout {
