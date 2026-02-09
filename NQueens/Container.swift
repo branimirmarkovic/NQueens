@@ -9,12 +9,13 @@ import Foundation
 import NQueenEngine
 
 
+final class Container {
+    static let shared = Container()
+    
+    private init() {}
+}
+
 final class GameEngineAdapter: GameEngine {
-    func queensRemaining() -> Int {
-        0
-    }
-    
-    
     private enum AdapterError: Error {
         case engineNotInitialized
     }
@@ -29,7 +30,8 @@ final class GameEngineAdapter: GameEngine {
     }
     
     func avaivablePositions() -> [GamePosition] {
-        []
+        guard let engine = engine else { return [] }
+        return engine.availablePositions().map { GamePosition(row: $0.row, column: $0.column) }
     }
     
     func placeQueen(at position: GamePosition) throws {
@@ -50,6 +52,11 @@ final class GameEngineAdapter: GameEngine {
     
     func resetBoard(size: Int) {
         engine?.reset(size: size)
+    }
+    
+    func queensRemaining() -> Int {
+        guard let engine = engine else { return 0 }
+        return engine.remainingQueens
     }
     
 }
