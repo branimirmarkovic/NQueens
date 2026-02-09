@@ -34,8 +34,8 @@ final class GameCreationViewModel {
         Array(3...25)
     }
     
-    func descriptionText(for size: Int) -> String {
-        "Place \(size) queens on an \(size)×\(size) chessboard so that no two queens threaten each other. Queens cannot share the same row, column, or diagonal."
+    func descriptionText() -> String {
+        "Place \(boardSize) queens on an \(boardSize)×\(boardSize) chessboard so that no two queens threaten each other. Queens cannot share the same row, column, or diagonal."
     }
 }
 

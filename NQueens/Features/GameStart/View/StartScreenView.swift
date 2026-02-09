@@ -37,7 +37,7 @@ struct StartScreenView: View {
     @ViewBuilder
     private func descriptionSection() -> some View {
         Section(GameCreationViewModel.Constants.descriptionSectionTitle) {
-            Text(viewModel.descriptionText(for: viewModel.boardSize))
+            Text(viewModel.descriptionText())
                 .font(.body)
                 .foregroundStyle(.secondary)
                 .fixedSize(horizontal: false, vertical: true)
