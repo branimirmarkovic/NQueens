@@ -16,20 +16,40 @@ final class GameBoardViewModel {
         static let availablePositionsTitle = "Available positions"
         static let resetButtonTitle = "Reset"
         static let placementErrorTitle = "Placement error"
+        static let defaultBoardSize = 8
     }
     
     var board: [[BoardPosition]]
     var remainingQueens: Int
     var placementError: BoardPlacementError?
+    var boardSize: Int
+    private var hasStarted = false
     private let gameEngine: GameController
     
     init(
-        gameEngine: GameController
+        gameEngine: GameController,
+        boardSize: Int = Constants.defaultBoardSize
     ) {
         self.gameEngine = gameEngine
+        self.boardSize = boardSize
         self.board = BoardMapper.createBoard(from: gameEngine)
         self.remainingQueens = gameEngine.queensRemaining()
         
+    }
+    
+    func startGame() {
+        if hasStarted {
+            refresh()
+            return
+        }
+        
+        do {
+            try gameEngine.startGame(size: boardSize, queens: [])
+            refresh()
+            hasStarted = true
+        } catch {
+            placementError = .uknown
+        }
     }
     
     func tap(at position: BoardPosition) {
