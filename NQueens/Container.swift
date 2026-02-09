@@ -9,22 +9,15 @@ import Foundation
 import NQueenEngine
 
 
-final class Container {
-    static var queensEngine = try! NQueensEngine(size: 3)
-    
-}
-
-
-
-
 final class GameEngineAdapter: GameEngine {
     
-    private let engine: NQueensEngine
+    private(set) var engine: NQueensEngine?
+    static let shared = GameEngineAdapter()
     
-    static let shared = GameEngineAdapter(engine: Container.queensEngine)
+    private init() {}
     
-    private init(engine: NQueensEngine) {
-        self.engine = engine
+    func setUpEngine(size: Int) throws {
+        self.engine = try NQueensEngine(size: size)
     }
     
     func avaivablePositions() -> [GamePosition] {
@@ -39,10 +32,9 @@ final class GameEngineAdapter: GameEngine {
         true
     }
     
-    func resetBoard(size: Int) {}
-    
+    func resetBoard(size: Int) {
+        engine?.reset(size: size)
+    }
     
 }
-
-
 
