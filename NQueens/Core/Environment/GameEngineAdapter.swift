@@ -1,19 +1,11 @@
 //
-//  Container.swift
+//  GameEngineAdapter.swift
 //  NQueens
 //
 //  Created by Branimir Markovic on 9. 2. 2026..
 //
 
-import Foundation
 import NQueenEngine
-
-
-final class Container {
-    static let shared = Container()
-    
-    private init() {}
-}
 
 final class GameEngineAdapter: GameEngine {
     private enum AdapterError: Error {
@@ -60,4 +52,3 @@ final class GameEngineAdapter: GameEngine {
     }
     
 }
-
