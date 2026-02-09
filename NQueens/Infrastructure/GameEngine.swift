@@ -11,4 +11,5 @@ protocol GameEngine {
     func avaivablePositions() -> [GamePosition]
     func queensRemaining() -> Int
     func resetBoard(size: Int)
+    func startGame(size: Int, queens: [GamePosition]) throws
 }

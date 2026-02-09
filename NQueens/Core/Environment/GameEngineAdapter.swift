@@ -17,8 +17,8 @@ final class GameEngineAdapter: GameEngine {
     
     private init() {}
     
-    func setUpEngine(size: Int) throws {
-        self.engine = try NQueensEngine(size: size)
+    func startGame(size: Int, queens: [GamePosition]) throws {
+       try setUpEngine(size: size)
     }
     
     func avaivablePositions() -> [GamePosition] {
@@ -49,6 +49,10 @@ final class GameEngineAdapter: GameEngine {
     func queensRemaining() -> Int {
         guard let engine = engine else { return 0 }
         return engine.remainingQueens
+    }
+    
+    private func setUpEngine(size: Int) throws {
+        self.engine = try NQueensEngine(size: size)
     }
     
 }
