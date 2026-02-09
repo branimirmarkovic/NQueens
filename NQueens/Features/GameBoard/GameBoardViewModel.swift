@@ -33,11 +33,7 @@ final class GameBoardViewModel {
     }
     
     func startGame() {
-        if hasStarted {
-            refresh()
-            return
-        }
-        
+        guard hasStarted == false else { return } 
         do {
             try gameEngine.startGame()
             refresh()
