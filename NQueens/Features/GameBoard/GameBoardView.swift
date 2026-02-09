@@ -157,6 +157,9 @@ struct GameBoardView: View {
     }
     
     private func backgroundColor(for position: BoardPosition) -> Color {
+        if position.isConflicting {
+            return AppTheme.Colors.conflictFill
+        }
         if position.isFreeToPlace {
             return AppTheme.Colors.highlightFill
         }
@@ -165,11 +168,17 @@ struct GameBoardView: View {
     }
     
     private func borderColor(for position: BoardPosition) -> Color {
-        position.isFreeToPlace ? AppTheme.Colors.highlightBorder : AppTheme.Colors.boardBorder
+        if position.isConflicting {
+            return AppTheme.Colors.conflictBorder
+        }
+        return position.isFreeToPlace ? AppTheme.Colors.highlightBorder : AppTheme.Colors.boardBorder
     }
     
     private func borderWidth(for position: BoardPosition) -> CGFloat {
-        position.isFreeToPlace ? Layout.highlightBorderWidth : Layout.normalBorderWidth
+        if position.isConflicting {
+            return Layout.highlightBorderWidth
+        }
+        return position.isFreeToPlace ? Layout.highlightBorderWidth : Layout.normalBorderWidth
     }
 }
 
