@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		22B5D4382F3A1A86004FBDE5 /* NQueenEngine in Frameworks */ = {isa = PBXBuildFile; productRef = 22B5D4372F3A1A86004FBDE5 /* NQueenEngine */; };
+		86A5B11FFF1640CD8D41E1ED /* NQueensTheme in Frameworks */ = {isa = PBXBuildFile; productRef = 22FC42B3B5A74E45A471D88C /* NQueensTheme */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -28,6 +29,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2207D01E2F3A8ECB00CD2D6A /* NQueensTheme */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = NQueensTheme; path = ../NQueensTheme; sourceTree = SOURCE_ROOT; };
 		22EE3C4A2F35200F00AB9441 /* NQueens.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NQueens.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		22EE3C572F35201000AB9441 /* NQueensTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NQueensTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		22EE3C612F35201000AB9441 /* NQueensUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NQueensUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -58,6 +60,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				22B5D4382F3A1A86004FBDE5 /* NQueenEngine in Frameworks */,
+				86A5B11FFF1640CD8D41E1ED /* NQueensTheme in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -88,6 +91,7 @@
 		22EE3C412F35200F00AB9441 = {
 			isa = PBXGroup;
 			children = (
+				2207D01E2F3A8ECB00CD2D6A /* NQueensTheme */,
 				22EE3C782F3522DB00AB9441 /* NQueenEngine */,
 				22EE3C4C2F35200F00AB9441 /* NQueens */,
 				22EE3C5A2F35201000AB9441 /* NQueensTests */,
@@ -128,6 +132,7 @@
 			name = NQueens;
 			packageProductDependencies = (
 				22B5D4372F3A1A86004FBDE5 /* NQueenEngine */,
+				22FC42B3B5A74E45A471D88C /* NQueensTheme */,
 			);
 			productName = NQueens;
 			productReference = 22EE3C4A2F35200F00AB9441 /* NQueens.app */;
@@ -599,6 +604,10 @@
 		22B5D4372F3A1A86004FBDE5 /* NQueenEngine */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = NQueenEngine;
+		};
+		22FC42B3B5A74E45A471D88C /* NQueensTheme */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = NQueensTheme;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -1,4 +1,5 @@
 import SwiftUI
+import NQueensTheme
 
 struct GameBoardView: View {
     @State var viewModel: GameBoardViewModel
