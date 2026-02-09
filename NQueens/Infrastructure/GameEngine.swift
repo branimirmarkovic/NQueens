@@ -6,8 +6,10 @@
 //
 
 protocol GameEngine {
+
     func placeQueen(at position: GamePosition) throws
     func removeQueen(at position: GamePosition) throws
+    
     func avaivablePositions() -> [GamePosition]
     func queensRemaining() -> Int
     func resetBoard(size: Int)

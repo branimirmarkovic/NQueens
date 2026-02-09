@@ -31,7 +31,11 @@ final class GameEngineAdapter: GameEngine {
             throw AdapterError.engineNotInitialized
         }
         let pos = Position(row: position.row, column: position.column)
-        try engine.place(pos)
+        do {
+            try engine.place(pos)
+        } catch let error as NQueenEngine.PlacementError {
+            throw BoardPlacementError(from: error)
+        }
     }
     
     func removeQueen(at position: GamePosition) throws {
@@ -39,7 +43,11 @@ final class GameEngineAdapter: GameEngine {
             throw AdapterError.engineNotInitialized
         }
         let pos = Position(row: position.row, column: position.column)
-        try engine.remove(pos)
+        do {
+            try engine.remove(pos)
+        } catch let error as NQueenEngine.PlacementError {
+            throw BoardPlacementError(from: error)
+        }
     }
     
     func resetBoard(size: Int) {
@@ -54,5 +62,15 @@ final class GameEngineAdapter: GameEngine {
     private func setUpEngine(size: Int) throws {
         self.engine = try NQueensEngine(size: size)
     }
-    
+}
+
+extension BoardPlacementError {
+    init(from error: NQueenEngine.PlacementError) {
+        switch error {
+        case .invalidPosition: self = .invalidPosition
+        case .positionOccupied: self = .positionOccupied
+        case .conflicts: self = .conflicts
+        case .noQueensRemaining: self = .noQueensRemaining
+        }
+    }
 }
