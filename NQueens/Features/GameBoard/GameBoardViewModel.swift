@@ -8,19 +8,6 @@
 import Foundation
 import Observation
 
-struct BoardPosition {
-    let row: Int
-    let column: Int
-    var hasQueen: Bool
-    var highlighted: Bool
-}
-
-enum BoardPlacementError: Error, Equatable {
-    case invalidPosition
-    case positionOccupied
-    case conflicts
-    case noQueensRemaining
-}
 
 @Observable
 final class GameBoardViewModel {
@@ -32,50 +19,27 @@ final class GameBoardViewModel {
     }
     
     var board: [[BoardPosition]]
-    var remainingQueens: Int = 0
+    var remainingQueens: Int
     var placementError: BoardPlacementError?
-    private let gameEngine: GameEngine
+    private let gameEngine: GameController
     
     init(
-        gameEngine: GameEngine
+        gameEngine: GameController
     ) {
         self.gameEngine = gameEngine
-        let size = gameEngine.boardSize
-        self.board = (0..<size).map { row in
-            (0..<size).map { column in
-                BoardPosition(row: row, column: column, hasQueen: false, highlighted: false)
-            }
-        }
+        self.board = BoardMapper.createBoard(from: gameEngine)
+        self.remainingQueens = gameEngine.queensRemaining()
+        
     }
     
     func tap(at position: BoardPosition) {
-        if position.hasQueen {
-            removeQueen(at: position)
-        } else {
-            if position.highlighted {
-                placeQueen(at: position)
-            } else {
-                placementError = .invalidPosition
-            }
-        }
-    }
-    
-    
-    private func placeQueen(at position: BoardPosition) {
         do {
-            try gameEngine.placeQueen(at: position.toGamePosition())
-            placementError = nil
+            try gameEngine.toggle(position.toGamePosition())
             refresh()
+        } catch let error as BoardPlacementError {
+            self.placementError = error
         } catch {
-            placementError = error as? BoardPlacementError
-        }
-    }
-
-    private func removeQueen(at position: BoardPosition) {
-        do {
-            try gameEngine.removeQueen(at: position.toGamePosition())
-            refresh()
-        } catch {
+            self.placementError = .uknown
         }
     }
     
@@ -83,11 +47,29 @@ final class GameBoardViewModel {
         let available = Set(gameEngine.avaivablePositions())
         remainingQueens = gameEngine.queensRemaining()
 
-        for row in 0..<board.count {
-            for col in 0..<board[row].count {
+        // Rebuild board to reflect queen placements from the engine.
+        var newBoard = BoardMapper.createBoard(from: gameEngine)
+        for row in 0..<newBoard.count {
+            for col in 0..<newBoard[row].count {
                 let isAvailable = available.contains(GamePosition(row: row, column: col))
-                board[row][col].highlighted = isAvailable
+                newBoard[row][col].highlighted = isAvailable
             }
+        }
+        board = newBoard
+    }
+    
+    func message(for error: BoardPlacementError) -> String {
+        switch error {
+        case .invalidPosition:
+            return "Invalid position selected."
+        case .positionOccupied:
+            return "This position is already occupied by a queen."
+        case .conflicts:
+            return "Placing a queen here would cause a conflict with another queen."
+        case .noQueensRemaining:
+            return "No queens remaining to place."
+        case .uknown:
+            return "An unknown error occurred."
         }
     }
 
@@ -95,9 +77,20 @@ final class GameBoardViewModel {
     func remainingQueens(_ count: Int) -> String { "Remaining queens: \(count)" }
 }
 
+struct BoardMapper{
+    static func createBoard(from engine: GameController) -> [[BoardPosition]] {
+        let board = (0..<engine.boardSize).map { row in
+            (0..<engine.boardSize).map { column in
+                let hasQueen = engine.queensPlaced().contains(where: { $0.row == row && $0.column == column })
+                return BoardPosition(row: row, column: column, hasQueen: hasQueen, highlighted: false)
+            }
+        }
+        return board
+    }
+}
+
 extension BoardPosition {
     func toGamePosition() -> GamePosition {
         .init(row: row, column: column)
     }
 }
-
