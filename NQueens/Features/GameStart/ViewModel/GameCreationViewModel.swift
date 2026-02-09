@@ -3,6 +3,18 @@ import NQueenEngine
 
 @Observable
 final class GameCreationViewModel {
+    
+    enum Constants {
+        static let title = "N-Queens"
+        static let setupSectionTitle = "Game setup"
+        static let boardSizeLabel = "Board size"
+        static let descriptionSectionTitle = "Description"
+        static let errorSectionTitle = "Error"
+        static let startButtonTitle = "Start"
+        static let gameRules = "Place N queens on an N×N chessboard so that no two queens threaten each other. Queens cannot share the same row, column, or diagonal."
+    }
+    
+    
     var boardSize: Int = 3
     var gameStarted: Bool = false
     var error: Error?
@@ -22,10 +34,6 @@ final class GameCreationViewModel {
     
     var availableSizes: [Int] {
         Array(3...25)
-    }
-    
-    var gameRules: String {
-        "Place N queens on an N×N chessboard so that no two queens threaten each other. Queens cannot share the same row, column, or diagonal."
     }
 }
 
