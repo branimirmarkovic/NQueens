@@ -35,7 +35,7 @@ struct GameBoardView: View {
             )
             
             Button(GameBoardViewModel.Constants.resetButtonTitle) {
-                viewModel.refresh()
+                viewModel.resetGame()
             }
             .padding(.top, 12)
         }

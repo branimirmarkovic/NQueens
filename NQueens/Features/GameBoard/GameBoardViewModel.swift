@@ -68,19 +68,28 @@ final class GameBoardViewModel {
     }
     
     func refresh() {
-        let available = Set(gameEngine.availablePositions())
+        let availablePositions = Set(gameEngine.availablePositions())
         remainingQueens = gameEngine.queensRemaining()
 
         var newBoard = BoardMapper.createBoard(from: gameEngine)
-        let totalPositions = newBoard.count * (newBoard.first?.count ?? 0)
-        let shouldHighlight = !available.isEmpty && available.count < totalPositions
-        for row in 0..<newBoard.count {
-            for col in 0..<newBoard[row].count {
-                let isAvailable = available.contains(GamePosition(row: row, column: col))
-                newBoard[row][col].highlighted = shouldHighlight && isAvailable
+        applyHighlights(to: &newBoard, available: availablePositions)
+
+        board = newBoard
+    }
+
+    private func applyHighlights(to board: inout [[BoardPosition]], available: Set<GamePosition>) {
+        let shouldHighlight = shouldHighlightAvailablePositions(available, in: board)
+        for row in board.indices {
+            for column in board[row].indices {
+                let position = GamePosition(row: row, column: column)
+                board[row][column].highlighted = shouldHighlight && available.contains(position)
             }
         }
-        board = newBoard
+    }
+
+    private func shouldHighlightAvailablePositions(_ available: Set<GamePosition>, in board: [[BoardPosition]]) -> Bool {
+        let totalPositions = board.count * (board.first?.count ?? 0)
+        return !available.isEmpty && available.count < totalPositions
     }
     
     func message(for error: BoardPlacementError) -> String {
