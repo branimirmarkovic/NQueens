@@ -7,8 +7,3 @@
 
 import Foundation
 
-extension ApplicationEnvironment: LiveEnvironment {
-    var gameEngine: GameEngine {
-        GameEngineAdapter.shared
-    }
-}

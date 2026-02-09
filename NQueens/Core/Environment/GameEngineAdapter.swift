@@ -7,19 +7,43 @@
 
 import NQueenEngine
 
-final class GameEngineAdapter: GameEngine {
-    
-    private enum AdapterError: Error {
+final class GameEngineController {
+    private enum ControllerError: Error {
         case engineNotInitialized
+        case invalidSize
     }
     
     private(set) var engine: NQueensEngine?
-    static let shared = GameEngineAdapter()
     
-    private init() {}
+    private func setUpEngine(size: Int, queens: [GamePosition]) throws {
+        let engineQueens = Set(queens.map { Position(row: $0.row, column: $0.column) })
+        self.engine = try NQueensEngine(size: size, queens: engineQueens)
+    }
+}
+
+extension GameEngineController: GameController {
+    func queensPlaced() -> [GamePosition] {
+        guard let engine = engine else { return [] }
+        return engine.board.queens.map { GamePosition(row: $0.row, column: $0.column) }
+    }
+    
+    func toggle(_ position: GamePosition) throws {
+           guard let engine else { throw ControllerError.engineNotInitialized }
+
+           do {
+               try engine.toggle(.init(row: position.row, column: position.column))
+           } catch let error as NQueenEngine.PlacementError {
+               throw BoardPlacementError(from: error)
+           }
+       }
+    
+    func queensRemaining() -> Int {
+        guard let engine = engine else { return 0 }
+        return engine.remainingQueensCount
+    }
     
     func startGame(size: Int, queens: [GamePosition]) throws {
-       try setUpEngine(size: size)
+       try setUpEngine(size: size, queens: queens)
     }
     
     func avaivablePositions() -> [GamePosition] {
@@ -27,45 +51,12 @@ final class GameEngineAdapter: GameEngine {
         return engine.availablePositions().map { GamePosition(row: $0.row, column: $0.column) }
     }
     
-    func placeQueen(at position: GamePosition) throws {
-        guard let engine = engine else {
-            throw AdapterError.engineNotInitialized
-        }
-        let pos = Position(row: position.row, column: position.column)
-        do {
-            try engine.place(pos)
-        } catch let error as NQueenEngine.PlacementError {
-            throw BoardPlacementError(from: error)
-        }
-    }
-    
-    func removeQueen(at position: GamePosition) throws {
-        guard let engine = engine else {
-            throw AdapterError.engineNotInitialized
-        }
-        let pos = Position(row: position.row, column: position.column)
-        do {
-            try engine.remove(pos)
-        } catch let error as NQueenEngine.PlacementError {
-            throw BoardPlacementError(from: error)
-        }
-    }
-    
-    func resetBoard(size: Int) {
-        engine?.reset(size: size)
-    }
-    
-    func queensRemaining() -> Int {
-        guard let engine = engine else { return 0 }
-        return engine.remainingQueensCount
+    func resetBoard(size: Int) throws {
+        try setUpEngine(size: size, queens: [])
     }
     
     var boardSize: Int {
         engine?.board.size ?? 0
-    }
-    
-    private func setUpEngine(size: Int) throws {
-        self.engine = try NQueensEngine(size: size)
     }
 }
 
