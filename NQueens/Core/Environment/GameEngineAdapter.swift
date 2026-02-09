@@ -57,7 +57,7 @@ final class GameEngineAdapter: GameEngine {
     
     func queensRemaining() -> Int {
         guard let engine = engine else { return 0 }
-        return engine.remainingQueens
+        return engine.remainingQueensCount
     }
     
     var boardSize: Int {
