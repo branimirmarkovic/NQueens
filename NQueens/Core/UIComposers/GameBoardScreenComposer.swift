@@ -9,9 +9,8 @@ import SwiftUI
 struct GameBoardScreenComposer {
     private init() {}
     
-    
-    static func compose() -> some View {
-        let gameEngine = GameEngineController()
+    static func compose(game: NQueenGame) -> some View {
+        let gameEngine = GameEngineController(game: game)
         let viewModel = GameBoardViewModel(gameEngine: gameEngine)
         return GameBoardView(viewModel: viewModel)
     }

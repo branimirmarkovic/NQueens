@@ -7,21 +7,19 @@
 
 import NQueenEngine
 
-final class GameEngineController {
+final class GameEngineController: GameController {
     private enum ControllerError: Error {
         case engineNotInitialized
         case invalidSize
     }
     
     private(set) var engine: NQueensEngine?
+    var game: NQueenGame
     
-    private func setUpEngine(size: Int, queens: [GamePosition]) throws {
-        let engineQueens = Set(queens.map { Position(row: $0.row, column: $0.column) })
-        self.engine = try NQueensEngine(size: size, queens: engineQueens)
+    init(game: NQueenGame) {
+        self.game = game
     }
-}
 
-extension GameEngineController: GameController {
     func queensPlaced() -> [GamePosition] {
         guard let engine = engine else { return [] }
         return engine.board.queens.map { GamePosition(row: $0.row, column: $0.column) }
@@ -42,8 +40,9 @@ extension GameEngineController: GameController {
         return engine.remainingQueensCount
     }
     
-    func startGame(size: Int, queens: [GamePosition]) throws {
-       try setUpEngine(size: size, queens: queens)
+    func startGame() throws {
+        let engineQueens = Set(game.queens.map { Position(row: $0.row, column: $0.column) })
+        self.engine = try NQueensEngine(size: game.size, queens: engineQueens)
     }
     
     func avaivablePositions() -> [GamePosition] {
@@ -52,7 +51,7 @@ extension GameEngineController: GameController {
     }
     
     func resetBoard(size: Int) throws {
-        try setUpEngine(size: size, queens: [])
+        self.engine = try NQueensEngine(size: size)
     }
     
     var boardSize: Int {

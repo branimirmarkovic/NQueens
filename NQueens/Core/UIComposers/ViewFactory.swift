@@ -12,8 +12,8 @@ struct ViewFactory {
     @ViewBuilder
     func view(for destination: PushDestination) -> some View {
         switch destination {
-        case .gameBoard(let gameSize):
-            GameBoardScreenComposer.compose()
+        case .gameBoard(let game):
+            GameBoardScreenComposer.compose(game: game)
         }
     }
     
@@ -21,4 +21,3 @@ struct ViewFactory {
         GameCreationScreenComposer.compose()
     }
 }
-

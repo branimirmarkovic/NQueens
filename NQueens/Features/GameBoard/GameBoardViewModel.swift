@@ -22,19 +22,15 @@ final class GameBoardViewModel {
     var board: [[BoardPosition]]
     var remainingQueens: Int
     var placementError: BoardPlacementError?
-    var boardSize: Int
     private var hasStarted = false
     private let gameEngine: GameController
     
     init(
         gameEngine: GameController,
-        boardSize: Int = Constants.defaultBoardSize
     ) {
         self.gameEngine = gameEngine
-        self.boardSize = boardSize
         self.board = BoardMapper.createBoard(from: gameEngine)
         self.remainingQueens = gameEngine.queensRemaining()
-        
     }
     
     func startGame() {
@@ -44,7 +40,7 @@ final class GameBoardViewModel {
         }
         
         do {
-            try gameEngine.startGame(size: boardSize, queens: [])
+            try gameEngine.startGame()
             refresh()
             hasStarted = true
         } catch {
@@ -67,12 +63,13 @@ final class GameBoardViewModel {
         let available = Set(gameEngine.avaivablePositions())
         remainingQueens = gameEngine.queensRemaining()
 
-        // Rebuild board to reflect queen placements from the engine.
         var newBoard = BoardMapper.createBoard(from: gameEngine)
+        let totalPositions = newBoard.count * (newBoard.first?.count ?? 0)
+        let shouldHighlight = !available.isEmpty && available.count < totalPositions
         for row in 0..<newBoard.count {
             for col in 0..<newBoard[row].count {
                 let isAvailable = available.contains(GamePosition(row: row, column: col))
-                newBoard[row][col].highlighted = isAvailable
+                newBoard[row][col].highlighted = shouldHighlight && isAvailable
             }
         }
         board = newBoard
@@ -92,6 +89,8 @@ final class GameBoardViewModel {
             return "An unknown error occurred."
         }
     }
+    
+    var boardSize: Int { gameEngine.boardSize }
 
     
     func remainingQueens(_ count: Int) -> String { "Remaining queens: \(count)" }

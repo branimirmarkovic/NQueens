@@ -11,19 +11,17 @@ struct GameBoardView: View {
                 errorBanner(error)
             }
             
-            let columns = Array(repeating: GridItem(.flexible(), spacing: 4), count: max(viewModel.board.count, 1))
+            let columns = Array(repeating: GridItem(.flexible(), spacing: 4), count: max(viewModel.boardSize, 1))
+            let positions = viewModel.board.flatMap { $0 }
             
             LazyVGrid(columns: columns, spacing: 4) {
-                ForEach(0..<viewModel.board.count, id: \.self) { row in
-                    ForEach(0..<viewModel.board[row].count, id: \.self) { column in
-                        let position = viewModel.board[row][column]
-                        Button {
-                            viewModel.tap(at: position)
-                        } label: {
-                            cell(for: position, row: row, column: column)
-                        }
-                        .buttonStyle(PlainButtonStyle())
+                ForEach(positions) { position in
+                    Button {
+                        viewModel.tap(at: position)
+                    } label: {
+                        cell(for: position, row: position.row, column: position.column)
                     }
+                    .buttonStyle(PlainButtonStyle())
                 }
             }
             .padding(6)
@@ -112,6 +110,4 @@ struct GameBoardView: View {
 }
 
 #Preview {
-    let viewModel = GameBoardViewModel(gameEngine:GameEngineController())
-    GameBoardView(viewModel: viewModel)
 }
