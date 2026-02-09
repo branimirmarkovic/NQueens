@@ -14,4 +14,5 @@ protocol GameController {
     func queensPlaced() -> [GamePosition]
     func queensRemaining() -> Int
     func startGame() throws
+    func resetGame() throws
 }

@@ -16,7 +16,6 @@ final class GameBoardViewModel {
         static let availablePositionsTitle = "Available positions"
         static let resetButtonTitle = "Reset"
         static let placementErrorTitle = "Placement error"
-        static let defaultBoardSize = 8
     }
     
     var board: [[BoardPosition]]
@@ -56,6 +55,15 @@ final class GameBoardViewModel {
             self.placementError = error
         } catch {
             self.placementError = .uknown
+        }
+    }
+    
+    func resetGame() {
+        do {
+            try gameEngine.resetGame()
+            refresh()
+        } catch {
+            placementError = .uknown
         }
     }
     

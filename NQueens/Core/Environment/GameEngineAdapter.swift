@@ -50,8 +50,8 @@ final class GameEngineController: GameController {
         return engine.availablePositions().map { GamePosition(row: $0.row, column: $0.column) }
     }
     
-    func resetBoard(size: Int) throws {
-        self.engine = try NQueensEngine(size: size)
+    func resetGame() throws {
+       try startGame()
     }
     
     var boardSize: Int {
