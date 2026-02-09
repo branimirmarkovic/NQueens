@@ -4,14 +4,30 @@ struct GameBoardView: View {
     @State var viewModel: GameBoardViewModel
     
     var body: some View {
-        VStack(spacing: Layout.sectionSpacing) {
-            header
-            errorSection
-            boardGrid
-            resetButton
+        GeometryReader { proxy in
+            let isLandscape = proxy.size.width > proxy.size.height
+            Group {
+                if isLandscape {
+                    HStack(spacing: Layout.sectionSpacing) {
+                        actionsColumn
+                            .fixedSize(horizontal: true, vertical: false)
+                            .frame(maxWidth: Layout.actionsMaxWidth, alignment: .leading)
+                        boardContainer
+                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                    }
+                } else {
+                    VStack(spacing: Layout.sectionSpacing) {
+                        header
+                        errorSection
+                        boardContainer
+                        resetButton
+                    }
+                }
+            }
+            .padding(Layout.screenPadding)
         }
-        .padding(Layout.screenPadding)
         .onAppear(perform: viewModel.startGame)
+        .navigationBarTitleDisplayMode(.inline)
     }
     
     private enum Layout {
@@ -23,6 +39,7 @@ struct GameBoardView: View {
         static let cellCornerRadius: CGFloat = 0
         static let highlightBorderWidth: CGFloat = 3
         static let normalBorderWidth: CGFloat = 1
+        static let actionsMaxWidth: CGFloat = 180
     }
     
     private var positions: [BoardPosition] {
@@ -47,6 +64,15 @@ struct GameBoardView: View {
                 .foregroundStyle(.secondary)
         }
     }
+
+    private var actionsColumn: some View {
+        VStack(alignment: .leading, spacing: Layout.sectionSpacing) {
+            header
+            errorSection
+            resetButton
+            Spacer(minLength: 0)
+        }
+    }
     
     @ViewBuilder
     private var errorSection: some View {
@@ -61,28 +87,15 @@ struct GameBoardView: View {
         }
     }
     
-    private var boardGrid: some View {
-        ScrollView {
-            LazyVGrid(columns: gridColumns, spacing: Layout.gridSpacing) {
-                ForEach(positions) { position in
-                    Button {
-                        viewModel.tap(at: position)
-                    } label: {
-                        cell(for: position)
-                    }
-                    .buttonStyle(.plain)
-                }
-            }
-            .padding(Layout.boardPadding)
-            .background(
-                RoundedRectangle(cornerRadius: Layout.boardCornerRadius)
-                    .fill(Color(UIColor.secondarySystemBackground))
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: Layout.boardCornerRadius)
-                    .stroke(Color.secondary.opacity(0.3), lineWidth: 1)
-            )
+    private var boardContainer: some View {
+        GeometryReader { proxy in
+            let side = min(proxy.size.width, proxy.size.height)
+            boardGrid(size: side)
+                .frame(width: side, height: side)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .layoutPriority(1)
     }
     
     private var resetButton: some View {
@@ -90,6 +103,29 @@ struct GameBoardView: View {
             viewModel.resetGame()
         }
         .padding(.top, 12)
+    }
+    
+    private func boardGrid(size: CGFloat) -> some View {
+        LazyVGrid(columns: gridColumns, spacing: Layout.gridSpacing) {
+            ForEach(positions) { position in
+                Button {
+                    viewModel.tap(at: position)
+                } label: {
+                    cell(for: position)
+                }
+                .buttonStyle(.plain)
+            }
+        }
+        .padding(Layout.boardPadding)
+        .background(
+            RoundedRectangle(cornerRadius: Layout.boardCornerRadius)
+                .fill(Color(UIColor.secondarySystemBackground))
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: Layout.boardCornerRadius)
+                .stroke(Color.secondary.opacity(0.3), lineWidth: 1)
+        )
+        .frame(width: size, height: size)
     }
     
     private func cell(for position: BoardPosition) -> some View {
