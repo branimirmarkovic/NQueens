@@ -6,6 +6,8 @@
 //
 
 protocol GameEngine {
+    
+    var boardSize: Int { get }
 
     func placeQueen(at position: GamePosition) throws
     func removeQueen(at position: GamePosition) throws

@@ -37,12 +37,12 @@ final class GameBoardViewModel {
     private let gameEngine: GameEngine
     
     init(
-        boardSize: Int,
         gameEngine: GameEngine
     ) {
         self.gameEngine = gameEngine
-        self.board = (0..<boardSize).map { row in
-            (0..<boardSize).map { column in
+        let size = gameEngine.boardSize
+        self.board = (0..<size).map { row in
+            (0..<size).map { column in
                 BoardPosition(row: row, column: column, hasQueen: false, highlighted: false)
             }
         }
@@ -90,6 +90,7 @@ final class GameBoardViewModel {
             }
         }
     }
+
     
     func remainingQueens(_ count: Int) -> String { "Remaining queens: \(count)" }
 }

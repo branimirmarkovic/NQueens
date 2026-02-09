@@ -8,6 +8,7 @@
 import NQueenEngine
 
 final class GameEngineAdapter: GameEngine {
+    
     private enum AdapterError: Error {
         case engineNotInitialized
     }
@@ -57,6 +58,10 @@ final class GameEngineAdapter: GameEngine {
     func queensRemaining() -> Int {
         guard let engine = engine else { return 0 }
         return engine.remainingQueens
+    }
+    
+    var boardSize: Int {
+        engine?.board.size ?? 0
     }
     
     private func setUpEngine(size: Int) throws {
