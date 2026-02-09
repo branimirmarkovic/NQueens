@@ -11,7 +11,6 @@ final class GameCreationViewModel {
         static let descriptionSectionTitle = "Description"
         static let errorSectionTitle = "Error"
         static let startButtonTitle = "Start"
-        static let gameRules = "Place N queens on an N×N chessboard so that no two queens threaten each other. Queens cannot share the same row, column, or diagonal."
     }
     
     var boardSize: Int = 3
@@ -33,6 +32,10 @@ final class GameCreationViewModel {
     
     var availableSizes: [Int] {
         Array(3...25)
+    }
+    
+    func descriptionText(for size: Int) -> String {
+        "Place \(size) queens on an \(size)×\(size) chessboard so that no two queens threaten each other. Queens cannot share the same row, column, or diagonal."
     }
 }
 
