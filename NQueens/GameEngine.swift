@@ -9,8 +9,8 @@
 protocol GameEngine {
     func placeQueen(at position: GamePosition) throws
     func removeQueen(at position: GamePosition) throws
-    func canPlaceQueen(at position: GamePosition) -> Bool
     func avaivablePositions() -> [GamePosition]
+    func queensRemaining() -> Int
     func resetBoard(size: Int)
 }
 

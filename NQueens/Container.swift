@@ -10,6 +10,14 @@ import NQueenEngine
 
 
 final class GameEngineAdapter: GameEngine {
+    func queensRemaining() -> Int {
+        0
+    }
+    
+    
+    private enum AdapterError: Error {
+        case engineNotInitialized
+    }
     
     private(set) var engine: NQueensEngine?
     static let shared = GameEngineAdapter()
@@ -24,12 +32,20 @@ final class GameEngineAdapter: GameEngine {
         []
     }
     
-    func placeQueen(at position: GamePosition) throws {}
+    func placeQueen(at position: GamePosition) throws {
+        guard let engine = engine else {
+            throw AdapterError.engineNotInitialized
+        }
+        let pos = Position(row: position.row, column: position.column)
+        try engine.place(pos)
+    }
     
-    func removeQueen(at position: GamePosition) throws { }
-    
-    func canPlaceQueen(at position: GamePosition) -> Bool {
-        true
+    func removeQueen(at position: GamePosition) throws {
+        guard let engine = engine else {
+            throw AdapterError.engineNotInitialized
+        }
+        let pos = Position(row: position.row, column: position.column)
+        try engine.remove(pos)
     }
     
     func resetBoard(size: Int) {
