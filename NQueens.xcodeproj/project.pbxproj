@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		22B5D4382F3A1A86004FBDE5 /* NQueenEngine in Frameworks */ = {isa = PBXBuildFile; productRef = 22B5D4372F3A1A86004FBDE5 /* NQueenEngine */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		22EE3C582F35201000AB9441 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -53,6 +57,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				22B5D4382F3A1A86004FBDE5 /* NQueenEngine in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -73,6 +78,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		22B5D4362F3A1A86004FBDE5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		22EE3C412F35200F00AB9441 = {
 			isa = PBXGroup;
 			children = (
@@ -80,6 +92,7 @@
 				22EE3C4C2F35200F00AB9441 /* NQueens */,
 				22EE3C5A2F35201000AB9441 /* NQueensTests */,
 				22EE3C642F35201000AB9441 /* NQueensUITests */,
+				22B5D4362F3A1A86004FBDE5 /* Frameworks */,
 				22EE3C4B2F35200F00AB9441 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -114,6 +127,7 @@
 			);
 			name = NQueens;
 			packageProductDependencies = (
+				22B5D4372F3A1A86004FBDE5 /* NQueenEngine */,
 			);
 			productName = NQueens;
 			productReference = 22EE3C4A2F35200F00AB9441 /* NQueens.app */;
@@ -580,6 +594,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		22B5D4372F3A1A86004FBDE5 /* NQueenEngine */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = NQueenEngine;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 22EE3C422F35200F00AB9441 /* Project object */;
 }
