@@ -14,11 +14,18 @@ struct StartScreenView: View {
     var body: some View {
         Form {
             setupSection()
+            difficultySection()
             descriptionSection()
             errorSection()
             startSection()
         }
         .navigationTitle(GameCreationViewModel.Constants.title)
+        .onChange(of: viewModel.game.size) { _, _ in
+            viewModel.updateActionLimit()
+        }
+        .onChange(of: viewModel.game.mode) { _, _ in
+            viewModel.updateActionLimit()
+        }
     }
 
     @ViewBuilder
@@ -30,6 +37,27 @@ struct StartScreenView: View {
                 }
             }
             .pickerStyle(.menu)
+        }
+    }
+    
+    @ViewBuilder
+    private func difficultySection() -> some View {
+        Section(GameCreationViewModel.Constants.difficultySectionTitle) {
+            Picker(GameCreationViewModel.Constants.difficultyLabel, selection: $viewModel.game.mode) {
+                ForEach(viewModel.availableModes, id: \.self) { mode in
+                    Text(viewModel.modeTitle(mode)).tag(mode)
+                }
+            }
+            .pickerStyle(.segmented)
+            
+            VStack(alignment: .leading, spacing: 4) {
+                Text(viewModel.modeTitle(viewModel.game.mode))
+                    .font(.headline)
+                Text(viewModel.modeDescription(viewModel.game.mode))
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+            }
+            .padding(.vertical, 4)
         }
     }
 

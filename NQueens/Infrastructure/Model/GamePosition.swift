@@ -16,4 +16,12 @@ struct NQueenGame: Hashable, Equatable {
     let id: UUID
     var size: Int
     var queens: [GamePosition]
+    var mode: GameMode
+    var maxActions: Int?
+}
+
+enum GameMode: CaseIterable {
+    case easy
+    case medium
+    case hard
 }
