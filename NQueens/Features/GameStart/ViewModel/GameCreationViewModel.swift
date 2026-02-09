@@ -13,11 +13,12 @@ final class GameCreationViewModel {
         static let startButtonTitle = "Start"
     }
     
-    var boardSize: Int = 3
+    var game: NQueenGame
     var gameStarted: Bool = false
     var error: Error?
 
-    func startGame() {
+    init() {
+        self.game = .init(size: 3, queens: [])
     }
     
     var availableSizes: [Int] {
@@ -25,7 +26,7 @@ final class GameCreationViewModel {
     }
     
     func descriptionText() -> String {
-        "Place \(boardSize) queens on an \(boardSize)×\(boardSize) chessboard so that no two queens threaten each other. Queens cannot share the same row, column, or diagonal."
+        "Place \(game.size) queens on an \(game.size)×\(game.size) chessboard so that no two queens threaten each other. Queens cannot share the same row, column, or diagonal."
     }
 }
 

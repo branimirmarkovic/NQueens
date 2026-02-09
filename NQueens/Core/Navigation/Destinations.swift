@@ -7,7 +7,7 @@
 
 
 enum PushDestination: Hashable, Equatable {
-    case gameBoard(size: Int)
+    case gameBoard(game: NQueenGame)
 }
 
 enum SheetDestination: Hashable, Equatable {

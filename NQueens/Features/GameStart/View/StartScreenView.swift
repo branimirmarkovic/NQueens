@@ -26,7 +26,7 @@ struct StartScreenView: View {
     @ViewBuilder
     private func setupSection() -> some View {
         Section(GameCreationViewModel.Constants.setupSectionTitle) {
-            Picker(GameCreationViewModel.Constants.boardSizeLabel, selection: $viewModel.boardSize) {
+            Picker(GameCreationViewModel.Constants.boardSizeLabel, selection: $viewModel.game.size) {
                 ForEach(viewModel.availableSizes, id: \.self) { size in
                     Text(sizeRowText(size)).tag(size)
                 }
@@ -59,13 +59,13 @@ struct StartScreenView: View {
     private func startSection() -> some View {
         Section {
             Button(action: {
-                coordinator.push(to: .gameBoard(size: viewModel.boardSize))
+                coordinator.push(to: .gameBoard(game: viewModel.game))
             }) {
                 Text(GameCreationViewModel.Constants.startButtonTitle)
                     .frame(maxWidth: .infinity)
             }
             .buttonStyle(.borderedProminent)
-            .disabled(viewModel.boardSize <= 0)
+            .disabled(viewModel.game.size <= 3)
         }
     }
 

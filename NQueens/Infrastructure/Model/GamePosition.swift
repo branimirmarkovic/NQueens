@@ -10,7 +10,7 @@ struct GamePosition: Hashable, Equatable {
     let column: Int
 }
 
-struct NQueenGame {
-    let size: Int
-    let queens: [GamePosition]
+struct NQueenGame: Hashable, Equatable {
+    var size: Int
+    var queens: [GamePosition]
 }
