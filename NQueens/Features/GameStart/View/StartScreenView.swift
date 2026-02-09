@@ -13,42 +13,61 @@ struct StartScreenView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section(GameCreationViewModel.Constants.setupSectionTitle) {
-                    Picker(GameCreationViewModel.Constants.boardSizeLabel, selection: $viewModel.boardSize) {
-                        ForEach(viewModel.availableSizes, id: \.self) { size in
-                            Text("\(size) x \(size)").tag(size)
-                        }
-                    }
-                    .pickerStyle(.menu)
-                }
-
-                Section(GameCreationViewModel.Constants.descriptionSectionTitle) {
-                    Text(GameCreationViewModel.Constants.gameRules)
-                        .font(.body)
-                        .foregroundStyle(.secondary)
-                        .fixedSize(horizontal: false, vertical: true)
-                }
-
-                if let error = viewModel.error {
-                    Section(GameCreationViewModel.Constants.errorSectionTitle) {
-                        Text(String(describing: error))
-                            .foregroundStyle(.red)
-                    }
-                }
-
-                Section {
-                    Button(action: {
-                        viewModel.startGame()
-                    }) {
-                        Text(GameCreationViewModel.Constants.startButtonTitle)
-                            .frame(maxWidth: .infinity)
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .disabled(viewModel.boardSize <= 0)
-                }
+                setupSection()
+                descriptionSection()
+                errorSection()
+                startSection()
             }
             .navigationTitle(GameCreationViewModel.Constants.title)
         }
+    }
+
+    @ViewBuilder
+    private func setupSection() -> some View {
+        Section(GameCreationViewModel.Constants.setupSectionTitle) {
+            Picker(GameCreationViewModel.Constants.boardSizeLabel, selection: $viewModel.boardSize) {
+                ForEach(viewModel.availableSizes, id: \.self) { size in
+                    Text(sizeRowText(size)).tag(size)
+                }
+            }
+            .pickerStyle(.menu)
+        }
+    }
+
+    @ViewBuilder
+    private func descriptionSection() -> some View {
+        Section(GameCreationViewModel.Constants.descriptionSectionTitle) {
+            Text(GameCreationViewModel.Constants.gameRules)
+                .font(.body)
+                .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+    }
+
+    @ViewBuilder
+    private func errorSection() -> some View {
+        if let error = viewModel.error {
+            Section(GameCreationViewModel.Constants.errorSectionTitle) {
+                Text(String(describing: error))
+                    .foregroundStyle(.red)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func startSection() -> some View {
+        Section {
+            Button(action: { viewModel.startGame() }) {
+                Text(GameCreationViewModel.Constants.startButtonTitle)
+                    .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(.borderedProminent)
+            .disabled(viewModel.boardSize <= 0)
+        }
+    }
+
+    private func sizeRowText(_ size: Int) -> String {
+        "\(size) x \(size)"
     }
 }
 

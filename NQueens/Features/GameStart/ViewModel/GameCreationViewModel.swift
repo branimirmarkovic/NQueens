@@ -14,7 +14,6 @@ final class GameCreationViewModel {
         static let gameRules = "Place N queens on an N×N chessboard so that no two queens threaten each other. Queens cannot share the same row, column, or diagonal."
     }
     
-    
     var boardSize: Int = 3
     var gameStarted: Bool = false
     var error: Error?
