@@ -18,15 +18,14 @@ final class GameCreationViewModel {
     var error: Error?
 
     init() {
-        self.game = .init(size: 3, queens: [])
+        self.game = .init(size: 4, queens: [])
     }
     
     var availableSizes: [Int] {
-        Array(3...25)
+        Array(4...25)
     }
     
     func descriptionText() -> String {
         "Place \(game.size) queens on an \(game.size)×\(game.size) chessboard so that no two queens threaten each other. Queens cannot share the same row, column, or diagonal."
     }
 }
-

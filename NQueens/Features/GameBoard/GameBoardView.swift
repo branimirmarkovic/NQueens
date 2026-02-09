@@ -31,12 +31,11 @@ struct GameBoardView: View {
     }
     
     private enum Layout {
-        static let gridSpacing: CGFloat = 4
-        static let sectionSpacing: CGFloat = 16
         static let screenPadding: CGFloat = 16
+        static let sectionSpacing: CGFloat = 16
+        static let gridSpacing: CGFloat = 4
         static let boardPadding: CGFloat = 6
         static let boardCornerRadius: CGFloat = 12
-        static let cellCornerRadius: CGFloat = 0
         static let highlightBorderWidth: CGFloat = 3
         static let normalBorderWidth: CGFloat = 1
         static let actionsMaxWidth: CGFloat = 180
@@ -78,12 +77,12 @@ struct GameBoardView: View {
     private var errorSection: some View {
         if let error = viewModel.placementError {
             Text(viewModel.message(for: error))
-                .foregroundColor(.white)
+                .foregroundColor(AppTheme.Colors.errorText)
                 .multilineTextAlignment(.center)
                 .padding(.vertical, 8)
                 .padding(.horizontal, 12)
                 .frame(maxWidth: .infinity)
-                .background(Color.red.opacity(0.85), in: RoundedRectangle(cornerRadius: 8))
+                .background(AppTheme.Colors.errorBackground, in: RoundedRectangle(cornerRadius: 8))
         }
     }
     
@@ -119,11 +118,11 @@ struct GameBoardView: View {
         .padding(Layout.boardPadding)
         .background(
             RoundedRectangle(cornerRadius: Layout.boardCornerRadius)
-                .fill(Color(UIColor.secondarySystemBackground))
+                .fill(AppTheme.Colors.boardBackground)
         )
         .overlay(
             RoundedRectangle(cornerRadius: Layout.boardCornerRadius)
-                .stroke(Color.secondary.opacity(0.3), lineWidth: 1)
+                .stroke(AppTheme.Colors.boardBorder, lineWidth: 1)
         )
         .frame(width: size, height: size)
     }
@@ -139,11 +138,11 @@ struct GameBoardView: View {
                 )
             
             if position.hasQueen {
-                Image(systemName: "crown.fill")
+                AppTheme.Icons.queen
                     .resizable()
                     .scaledToFit()
                     .padding(6)
-                    .foregroundColor(.yellow)
+                    .foregroundColor(AppTheme.Colors.queen)
                     .shadow(color: .black.opacity(0.2), radius: 2, x: 0, y: 1)
             }
         }
@@ -152,14 +151,14 @@ struct GameBoardView: View {
     
     private func backgroundColor(for position: BoardPosition) -> Color {
         if position.highlighted {
-            return Color.green.opacity(0.35)
+            return AppTheme.Colors.highlightFill
         }
         let isDark = (position.row + position.column) % 2 == 0
-        return isDark ? Color(UIColor.systemGray6) : Color(UIColor.systemBackground)
+        return isDark ? AppTheme.Colors.cellDark : AppTheme.Colors.cellLight
     }
     
     private func borderColor(for position: BoardPosition) -> Color {
-        position.highlighted ? .green : Color.secondary.opacity(0.25)
+        position.highlighted ? AppTheme.Colors.highlightBorder : AppTheme.Colors.boardBorder
     }
     
     private func borderWidth(for position: BoardPosition) -> CGFloat {

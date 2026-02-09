@@ -12,15 +12,13 @@ struct StartScreenView: View {
     @Environment(MainCoordinator.self) var coordinator
 
     var body: some View {
-        NavigationStack {
-            Form {
-                setupSection()
-                descriptionSection()
-                errorSection()
-                startSection()
-            }
-            .navigationTitle(GameCreationViewModel.Constants.title)
+        Form {
+            setupSection()
+            descriptionSection()
+            errorSection()
+            startSection()
         }
+        .navigationTitle(GameCreationViewModel.Constants.title)
     }
 
     @ViewBuilder
@@ -65,7 +63,7 @@ struct StartScreenView: View {
                     .frame(maxWidth: .infinity)
             }
             .buttonStyle(.borderedProminent)
-            .disabled(viewModel.game.size <= 3)
+            .disabled(viewModel.game.size < 4)
         }
     }
 
