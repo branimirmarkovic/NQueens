@@ -60,7 +60,7 @@ final class GameBoardViewModel {
     }
     
     func refresh() {
-        let available = Set(gameEngine.avaivablePositions())
+        let available = Set(gameEngine.availablePositions())
         remainingQueens = gameEngine.queensRemaining()
 
         var newBoard = BoardMapper.createBoard(from: gameEngine)

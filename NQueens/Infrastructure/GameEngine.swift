@@ -10,7 +10,7 @@ protocol GameController {
     var boardSize: Int { get }
     var game: NQueenGame { get set }
     func toggle(_ position: GamePosition) throws
-    func avaivablePositions() -> [GamePosition]
+    func availablePositions() -> [GamePosition]
     func queensPlaced() -> [GamePosition]
     func queensRemaining() -> Int
     func startGame() throws

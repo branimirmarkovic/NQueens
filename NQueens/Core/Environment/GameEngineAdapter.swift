@@ -45,7 +45,7 @@ final class GameEngineController: GameController {
         self.engine = try NQueensEngine(size: game.size, queens: engineQueens)
     }
     
-    func avaivablePositions() -> [GamePosition] {
+    func availablePositions() -> [GamePosition] {
         guard let engine = engine else { return [] }
         return engine.availablePositions().map { GamePosition(row: $0.row, column: $0.column) }
     }
