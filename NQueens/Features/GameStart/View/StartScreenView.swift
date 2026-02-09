@@ -9,6 +9,7 @@ import SwiftUI
 
 struct StartScreenView: View {
     @State var viewModel: GameCreationViewModel
+    @Environment(MainCoordinator.self) var coordinator
 
     var body: some View {
         NavigationStack {
@@ -57,7 +58,9 @@ struct StartScreenView: View {
     @ViewBuilder
     private func startSection() -> some View {
         Section {
-            Button(action: { viewModel.startGame() }) {
+            Button(action: {
+                coordinator.push(to: .gameBoard(size: viewModel.boardSize))
+            }) {
                 Text(GameCreationViewModel.Constants.startButtonTitle)
                     .frame(maxWidth: .infinity)
             }

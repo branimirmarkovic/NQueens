@@ -25,16 +25,21 @@ struct ViewFactory {
 struct GameBoardScreenComposer {
     private init() {}
     
-    @ViewBuilder
+    
     static func compose() -> some View {
-        
+        let gameEngine = GameEngineController()
+        let viewModel = GameBoardViewModel(gameEngine: gameEngine)
+        return GameBoardView(viewModel: viewModel)
     }
 }
 
 struct GameCreationScreenComposer {
     private init() {}
     
-    @ViewBuilder
+    
     static func compose() -> some View {
+        let viewModel = GameCreationViewModel()
+        let view = StartScreenView(viewModel: viewModel)
+        return view
     }
 }
