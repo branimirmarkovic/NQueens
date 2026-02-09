@@ -10,7 +10,8 @@ struct BoardPosition: Identifiable {
     let row: Int
     let column: Int
     var hasQueen: Bool
-    var highlighted: Bool
+    var isFreeToPlace: Bool
+    var isConflicting: Bool
     
     var id: Int { (row << 16) | column }
 }

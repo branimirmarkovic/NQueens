@@ -157,7 +157,7 @@ struct GameBoardView: View {
     }
     
     private func backgroundColor(for position: BoardPosition) -> Color {
-        if position.highlighted {
+        if position.isFreeToPlace {
             return AppTheme.Colors.highlightFill
         }
         let isDark = (position.row + position.column) % 2 == 0
@@ -165,11 +165,11 @@ struct GameBoardView: View {
     }
     
     private func borderColor(for position: BoardPosition) -> Color {
-        position.highlighted ? AppTheme.Colors.highlightBorder : AppTheme.Colors.boardBorder
+        position.isFreeToPlace ? AppTheme.Colors.highlightBorder : AppTheme.Colors.boardBorder
     }
     
     private func borderWidth(for position: BoardPosition) -> CGFloat {
-        position.highlighted ? Layout.highlightBorderWidth : Layout.normalBorderWidth
+        position.isFreeToPlace ? Layout.highlightBorderWidth : Layout.normalBorderWidth
     }
 }
 

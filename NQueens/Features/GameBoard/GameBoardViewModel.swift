@@ -75,10 +75,12 @@ final class GameBoardViewModel {
     
     func refresh() {
         let availablePositions = Set(gameEngine.availablePositions())
+        let conflictingPositions = Set(gameEngine.conflictingPositions())
         remainingQueens = gameEngine.queensRemaining()
 
         var newBoard = BoardMapper.createBoard(from: gameEngine)
         applyHighlights(to: &newBoard, available: availablePositions)
+        applyConflicts(to: &newBoard, conflicts: conflictingPositions)
 
         board = newBoard
     }
@@ -88,7 +90,7 @@ final class GameBoardViewModel {
         for row in board.indices {
             for column in board[row].indices {
                 let position = GamePosition(row: row, column: column)
-                board[row][column].highlighted = shouldHighlight && available.contains(position)
+                board[row][column].isFreeToPlace = shouldHighlight && available.contains(position)
             }
         }
     }
@@ -96,6 +98,15 @@ final class GameBoardViewModel {
     private func shouldHighlightAvailablePositions(_ available: Set<GamePosition>, in board: [[BoardPosition]]) -> Bool {
         let totalPositions = board.count * (board.first?.count ?? 0)
         return !available.isEmpty && available.count < totalPositions
+    }
+    
+    private func applyConflicts(to board: inout [[BoardPosition]], conflicts: Set<GamePosition>) {
+        for row in board.indices {
+            for column in board[row].indices {
+                let position = GamePosition(row: row, column: column)
+                board[row][column].isConflicting = conflicts.contains(position)
+            }
+        }
     }
     
     private func checkIfSolved() {
@@ -137,7 +148,7 @@ struct BoardMapper{
         let board = (0..<engine.boardSize).map { row in
             (0..<engine.boardSize).map { column in
                 let hasQueen = engine.queensPlaced().contains(where: { $0.row == row && $0.column == column })
-                return BoardPosition(row: row, column: column, hasQueen: hasQueen, highlighted: false)
+                return BoardPosition(row: row, column: column, hasQueen: hasQueen, isFreeToPlace: false, isConflicting: false)
             }
         }
         return board

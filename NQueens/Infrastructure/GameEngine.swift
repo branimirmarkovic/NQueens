@@ -11,6 +11,7 @@ protocol GameController {
     var game: NQueenGame { get set }
     func toggle(_ position: GamePosition) throws
     func availablePositions() -> [GamePosition]
+    func conflictingPositions() -> [GamePosition] 
     func queensPlaced() -> [GamePosition]
     func queensRemaining() -> Int
     func startGame() throws

@@ -50,6 +50,11 @@ final class GameEngineController: GameController {
         return engine.availablePositions().map { GamePosition(row: $0.row, column: $0.column) }
     }
     
+    func conflictingPositions() -> [GamePosition] {
+        guard let engine = engine else { return [] }
+        return engine.conflictingPositions().map { GamePosition(row: $0.row, column: $0.column) }
+    }
+    
     func resetGame() throws {
        try startGame()
     }
