@@ -79,6 +79,6 @@ struct GameBoardView: View {
 }
 
 #Preview {
-    let viewModel = GameBoardViewModel(gameEngine: GameEngineAdapter.shared)
+    let viewModel = GameBoardViewModel(gameEngine:GameEngineController())
     GameBoardView(viewModel: viewModel)
 }

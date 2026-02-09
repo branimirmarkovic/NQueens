@@ -72,6 +72,6 @@ struct StartScreenView: View {
 }
 
 #Preview {
-    let vm = GameCreationViewModel(gameEngine: GameEngineAdapter.shared)
+    let vm = GameCreationViewModel()
     StartScreenView(viewModel: vm)
 }

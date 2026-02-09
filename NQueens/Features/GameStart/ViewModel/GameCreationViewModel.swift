@@ -16,18 +16,8 @@ final class GameCreationViewModel {
     var boardSize: Int = 3
     var gameStarted: Bool = false
     var error: Error?
-    private let gameEngine: GameEngine
-    
-    init(gameEngine: GameEngine) {
-        self.gameEngine = gameEngine
-    }
 
     func startGame() {
-        do {
-            try gameEngine.startGame(size: boardSize, queens: [])
-        } catch {
-            self.error = error
-        }
     }
     
     var availableSizes: [Int] {
