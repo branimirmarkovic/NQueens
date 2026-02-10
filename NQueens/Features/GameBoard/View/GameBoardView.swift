@@ -30,13 +30,8 @@ struct GameBoardView: View {
         }
         .onAppear(perform: viewModel.startGame)
         .navigationBarTitleDisplayMode(.inline)
-        .onChange(of: viewModel.gameSolved) { oldValue, newValue in
-            if viewModel.gameSolved {
-                coordinator.presentSheet(.gameEnded(viewModel: viewModel))
-            }
-        }
-        .onChange(of: viewModel.gameOver) { oldValue, newValue in
-            if viewModel.gameOver {
+        .onChange(of: viewModel.gameState) { _, _ in
+            if viewModel.gameState == .won || viewModel.gameState == .lost  {
                 coordinator.presentSheet(.gameEnded(viewModel: viewModel))
             }
         }
@@ -70,12 +65,12 @@ struct GameBoardView: View {
                 .font(.largeTitle)
                 .bold()
             
-            Text(viewModel.remainingQueens(viewModel.remainingQueens))
+            Text(viewModel.remainingQueensTitle)
                 .font(.headline)
                 .foregroundStyle(.secondary)
 
-            if let movesLeft = viewModel.movesLeft {
-                Text("Moves left: \(movesLeft)")
+            if  viewModel.gameController.game.mode == .hard {
+                Text(viewModel.movesLeftTitle)
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             }
@@ -94,7 +89,7 @@ struct GameBoardView: View {
     @ViewBuilder
     private var errorSection: some View {
         if let error = viewModel.placementError {
-            Text(viewModel.message(for: error))
+            Text(error.message)
                 .foregroundColor(AppTheme.Colors.errorText)
                 .multilineTextAlignment(.center)
                 .lineLimit(nil)

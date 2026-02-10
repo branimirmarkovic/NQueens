@@ -13,11 +13,11 @@ struct GameBoardSolvedView: View {
     
     var body: some View {
         VStack(spacing: 16) {
-            Text(GameBoardViewModel.Constants.gameEndTitle(gameSolved: viewModel.gameSolved))
+            Text(GameBoardViewModel.Constants.gameEndTitle(gameSolved: viewModel.gameState == .won))
                 .font(.title)
                 .bold()
             
-            Text(GameBoardViewModel.Constants.gameEndMessage(gameSolved: viewModel.gameSolved))
+            Text(GameBoardViewModel.Constants.gameEndMessage(gameSolved: viewModel.gameState == .won))
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
             

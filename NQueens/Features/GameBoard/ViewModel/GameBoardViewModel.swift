@@ -12,6 +12,145 @@ import Observation
 @Observable
 final class GameBoardViewModel {
     
+    typealias BoardModel = [[BoardPosition]]
+    typealias BoardPlacementErrorDescription = (error: BoardPlacementError, message: String)
+    
+    enum GameState {
+        case notStarted
+        case ongoing
+        case won
+        case lost
+    }
+    
+    var board: BoardModel
+    var placementError: BoardPlacementErrorDescription?
+    var gameState: GameState = .notStarted
+    
+    @ObservationIgnored private(set) var gameController: GameController
+    @ObservationIgnored private let boardModelSynchronizer = BoardModelSynchronizer.self
+    @ObservationIgnored private let gameWinChecker = GameWinChecker.self
+    @ObservationIgnored private var errorResetTask: Task<Void, Never>?
+    @ObservationIgnored private var errorToken = UUID()
+    
+    init(
+        gameController: GameController,
+    ) {
+        self.gameController = gameController
+        self.board = boardModelSynchronizer.createSynchronizedBoard(with: gameController)
+    }
+    
+    func startGame() {
+        guard gameState == .notStarted else { return }
+        do {
+            clearPlacementError()
+            try gameController.startGame()
+            synchronizeBoard()
+            gameState = .ongoing
+        } catch {
+            setPlacementError(.uknown)
+        }
+    }
+    
+    func tap(at position: BoardPosition) {
+        do {
+            try gameController.toggle(position.toGamePosition())
+            addMoveToCounter()
+            synchronizeBoard()
+            checkGameConditions()
+        } catch let error as BoardPlacementError {
+            setPlacementError(error)
+        } catch {
+            setPlacementError(.uknown)
+        }
+    }
+    
+    func resetGame() {
+        do {
+            clearPlacementError()
+            try gameController.resetGame()
+            synchronizeBoard()
+            gameState = .ongoing
+        } catch {
+            setPlacementError(.uknown)
+        }
+    }
+    
+    var movesLeftTitle: String {
+        guard gameController.game.mode == .hard,
+              let maxActions = gameController.game.maxActions,
+              let movesCounter = gameController.game.movesMade else { return "" }
+        return "Moves left: \(maxActions - movesCounter)"
+    }
+    
+    var boardSize: Int { gameController.boardSize }
+    
+    var remainingQueensTitle: String {
+        "Remaining queens: \(gameController.queensRemaining())"
+    }
+    
+    private func schedulePlacementErrorClear() {
+        errorResetTask?.cancel()
+        let token = UUID()
+        errorToken = token
+        errorResetTask = Task { [weak self] in
+            try? await Task.sleep(nanoseconds: 2_000_000_000)
+            await MainActor.run {
+                guard let self, self.errorToken == token else { return }
+                self.placementError = nil
+            }
+        }
+    }
+    
+    private func setPlacementError(_ error: BoardPlacementError) {
+        placementError = (error, message(for: error))
+        schedulePlacementErrorClear()
+    }
+    
+    private func clearPlacementError() {
+        errorResetTask?.cancel()
+        placementError = nil
+    }
+    
+    private func synchronizeBoard() {
+        board = boardModelSynchronizer.createSynchronizedBoard(with: gameController)
+    }
+    
+    private func checkGameConditions() {
+        if gameWinChecker.isGameOver(gameMode: gameController.game.mode, movesMade: gameController.game.movesMade, maxActions: gameController.game.maxActions)
+        {    gameState = .lost }
+        else if gameWinChecker.isGameSolved(remainingQueens: gameController.queensRemaining(), conflictingPositions: Set(gameController.conflictingPositions())) {
+            gameState = .won
+        }
+    }
+    
+    private func addMoveToCounter() {
+        guard gameController.game.mode == .hard else { return }
+        gameController.game.movesMade? += 1
+    }
+    
+    private func message(for error: BoardPlacementError) -> String {
+        switch error {
+        case .invalidPosition:
+            return "Invalid position selected."
+        case .positionOccupied:
+            return "This position is already occupied by a queen."
+        case .conflicts:
+            return "Placing a queen here would cause a conflict with another queen."
+        case .noQueensRemaining:
+            return "No queens remaining to place."
+        case .uknown:
+            return "An unknown error occurred."
+        }
+    }
+}
+
+extension BoardPosition {
+    func toGamePosition() -> GamePosition {
+        .init(row: row, column: column)
+    }
+}
+
+extension GameBoardViewModel {
     enum Constants {
         static let title = "Board"
         static let availablePositionsTitle = "Available positions"
@@ -33,198 +172,5 @@ final class GameBoardViewModel {
         static func gameEndMessage(gameSolved: Bool) -> String {
             gameSolved ? winningMessage : loosingMessage
         }
-    }
-    
-    var board: [[BoardPosition]]
-    var remainingQueens: Int
-    var placementError: BoardPlacementError?
-    var gameSolved: Bool = false
-    var gameOver: Bool = false
-    @ObservationIgnored private var hasStarted = false
-    @ObservationIgnored private(set) var gameController: GameController
-    @ObservationIgnored private var errorResetTask: Task<Void, Never>?
-    @ObservationIgnored private var errorToken = UUID()
-    
-    init(
-        gameController: GameController,
-    ) {
-        self.gameController = gameController
-        self.board = BoardMapper.createBoard(from: gameController)
-        self.remainingQueens = gameController.queensRemaining()
-    }
-    
-    func startGame() {
-        guard hasStarted == false else { return } 
-        do {
-            resetSolvedState()
-            clearPlacementError()
-            try gameController.startGame()
-            refresh()
-            hasStarted = true
-        } catch {
-            setPlacementError(.uknown)
-        }
-    }
-    
-    func tap(at position: BoardPosition) {
-        do {
-            try gameController.toggle(position.toGamePosition())
-            addMoveToCounter()
-            refresh()
-            checkIfSolved()
-            checkIfGameOver()
-        } catch let error as BoardPlacementError {
-            setPlacementError(error)
-        } catch {
-            setPlacementError(.uknown)
-        }
-    }
-    
-    func resetGame() {
-        do {
-            resetSolvedState()
-            clearPlacementError()
-            try gameController.resetGame()
-            refresh()
-        } catch {
-            setPlacementError(.uknown)
-        }
-    }
-    
-    func refresh() {
-        let availablePositions = Set(gameController.availablePositions())
-        let conflictingPositions = Set(gameController.conflictingPositions())
-        remainingQueens = gameController.queensRemaining()
-
-        var newBoard = BoardMapper.createBoard(from: gameController)
-        if gameController.game.mode == .easy {
-            applyHighlights(to: &newBoard, available: availablePositions)
-        }
-        if gameController.game.mode == .medium {
-            applyConflicts(to: &newBoard, conflicts: conflictingPositions)
-        }
-
-        board = newBoard
-    }
-
-    private func applyHighlights(to board: inout [[BoardPosition]], available: Set<GamePosition>) {
-        let shouldHighlight = shouldHighlightAvailablePositions(available, in: board)
-        for row in board.indices {
-            for column in board[row].indices {
-                let position = GamePosition(row: row, column: column)
-                board[row][column].isFreeToPlace = shouldHighlight && available.contains(position)
-            }
-        }
-    }
-
-    private func shouldHighlightAvailablePositions(_ available: Set<GamePosition>, in board: [[BoardPosition]]) -> Bool {
-        let totalPositions = board.count * (board.first?.count ?? 0)
-        return !available.isEmpty && available.count < totalPositions
-    }
-    
-    private func applyConflicts(to board: inout [[BoardPosition]], conflicts: Set<GamePosition>) {
-        for row in board.indices {
-            for column in board[row].indices {
-                let position = GamePosition(row: row, column: column)
-                board[row][column].isConflicting = conflicts.contains(position)
-            }
-        }
-    }
-    
-    private func checkIfSolved() {
-        let conflictingPositions = Set(gameController.conflictingPositions())
-        let isSolved = remainingQueens == 0 && gameController.boardSize > 0 && conflictingPositions.isEmpty
-        if isSolved && gameSolved == false {
-            gameSolved = true
-        } else if isSolved == false {
-            gameSolved = false
-        }
-    }
-    
-    private func checkIfGameOver() {
-        guard gameController.game.mode == .hard,
-              let maxActions = gameController.game.maxActions,
-              let movesCounter = gameController.game.movesMade else { return }
-        if movesCounter >  maxActions {
-            gameOver = true
-        }
-    }
-    
-    private func addMoveToCounter() {
-        guard gameController.game.mode == .hard else { return }
-        gameController.game.movesMade? += 1
-    }
-    
-    private func resetSolvedState() {
-        gameSolved = false
-        gameOver = false
-    }
-    
-    var movesLeft: Int? {
-        guard gameController.game.mode == .hard,
-              let maxActions = gameController.game.maxActions,
-              let movesCounter = gameController.game.movesMade else { return nil }
-        return max(0, maxActions - movesCounter)
-    }
-
-    private func setPlacementError(_ error: BoardPlacementError) {
-        placementError = error
-        schedulePlacementErrorClear()
-    }
-    
-    private func clearPlacementError() {
-        errorResetTask?.cancel()
-        placementError = nil
-    }
-    
-    private func schedulePlacementErrorClear() {
-        errorResetTask?.cancel()
-        let token = UUID()
-        errorToken = token
-        errorResetTask = Task { [weak self] in
-            try? await Task.sleep(nanoseconds: 2_000_000_000)
-            await MainActor.run {
-                guard let self, self.errorToken == token else { return }
-                self.placementError = nil
-            }
-        }
-    }
-    
-    func message(for error: BoardPlacementError) -> String {
-        switch error {
-        case .invalidPosition:
-            return "Invalid position selected."
-        case .positionOccupied:
-            return "This position is already occupied by a queen."
-        case .conflicts:
-            return "Placing a queen here would cause a conflict with another queen."
-        case .noQueensRemaining:
-            return "No queens remaining to place."
-        case .uknown:
-            return "An unknown error occurred."
-        }
-    }
-    
-    var boardSize: Int { gameController.boardSize }
-
-    
-    func remainingQueens(_ count: Int) -> String { "Remaining queens: \(count)" }
-}
-
-struct BoardMapper{
-    static func createBoard(from engine: GameController) -> [[BoardPosition]] {
-        let board = (0..<engine.boardSize).map { row in
-            (0..<engine.boardSize).map { column in
-                let hasQueen = engine.queensPlaced().contains(where: { $0.row == row && $0.column == column })
-                return BoardPosition(row: row, column: column, hasQueen: hasQueen, isFreeToPlace: false, isConflicting: false)
-            }
-        }
-        return board
-    }
-}
-
-extension BoardPosition {
-    func toGamePosition() -> GamePosition {
-        .init(row: row, column: column)
     }
 }

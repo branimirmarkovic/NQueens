@@ -6,6 +6,11 @@
 //
 import Foundation
 
+struct BoardPositionID: Hashable {
+    let row: Int
+    let column: Int
+}
+
 struct BoardPosition: Identifiable {
     let row: Int
     let column: Int
@@ -13,7 +18,7 @@ struct BoardPosition: Identifiable {
     var isFreeToPlace: Bool
     var isConflicting: Bool
     
-    var id: Int { (row << 16) | column }
+    var id: BoardPositionID { .init(row: row, column: column) }
 }
 
 enum BoardPlacementError: Error, Equatable {
