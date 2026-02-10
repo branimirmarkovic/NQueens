@@ -14,17 +14,12 @@ final class GameCreationViewModel {
         static let startButtonTitle = "Start"
     }
     
-    var game: NQueenGame {
-        didSet {
-            updateActionLimit()
-        }
-    }
+    var game: NQueenGame
 
     init() {
         let defaultSize = 4
         let defaultMode: GameMode = .easy
-        let defaultMaxActions = GameCreationViewModel.actionLimit(for: defaultSize, mode: defaultMode)
-        self.game = .init(id: .init(), size: defaultSize, queens: [], mode: defaultMode, maxActions: defaultMaxActions)
+        self.game = .init(id: .init(), size: defaultSize, queens: [], mode: defaultMode)
     }
     
     func modeTitle(_ mode: GameMode) -> String {
@@ -43,14 +38,13 @@ final class GameCreationViewModel {
     }
     
     func modeDescription(_ mode: GameMode) -> String {
-        let limit = Self.actionLimit(for: game.size, mode: mode)
         switch mode {
         case .easy:
             return "Shows available fields and prevents conflicting moves."
         case .medium:
             return "Shows conflicting queens. Available fields are hidden and conflicting moves are allowed."
         case .hard:
-            if let limit {
+            if let limit = game.maxActions {
                 return "No visual hints. Action limit: \(limit)."
             }
             return "No visual hints."
@@ -68,19 +62,17 @@ final class GameCreationViewModel {
     var availableModes: [GameMode] {
         GameMode.allCases
     }
-    
-    private func updateActionLimit() {
-        game.maxActions = Self.actionLimit(for: game.size, mode: game.mode)
-    }
-    
-    private static func actionLimit(for size: Int, mode: GameMode) -> Int? {
+}
+
+extension NQueenGame {
+    var maxActions: Int? {
         switch mode {
         case .easy:
             return nil
         case .medium:
             return nil
         case .hard:
-            return size * 3
+            return size * 2
         }
     }
 }

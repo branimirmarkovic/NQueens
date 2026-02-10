@@ -100,7 +100,6 @@ extension UserDefaultsGameStorageService.StoredGame {
             size: boardSize,
             queens: queens.map { $0.toGamePosition() },
             mode: difficulty.toGameMode(),
-            maxActions: maxActions,
             movesMade: movesMade
         )
     }

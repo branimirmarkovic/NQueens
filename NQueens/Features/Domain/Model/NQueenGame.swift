@@ -12,7 +12,6 @@ struct NQueenGame: Hashable, Equatable {
     var size: Int
     var queens: [GamePosition]
     var mode: GameMode
-    var maxActions: Int?
     var movesMade: Int?
 }
 
