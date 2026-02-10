@@ -12,7 +12,6 @@ struct GameBoardView: View {
                 if isLandscape {
                     HStack(spacing: Layout.sectionSpacing) {
                         actionsColumn
-                            .fixedSize(horizontal: true, vertical: false)
                             .frame(maxWidth: Layout.actionsMaxWidth, alignment: .leading)
                         boardContainer
                             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
@@ -78,7 +77,7 @@ struct GameBoardView: View {
     }
 
     private var actionsColumn: some View {
-        VStack(alignment: .leading, spacing: Layout.sectionSpacing) {
+        VStack(alignment: .center, spacing: Layout.sectionSpacing) {
             header
             errorSection
             resetButton

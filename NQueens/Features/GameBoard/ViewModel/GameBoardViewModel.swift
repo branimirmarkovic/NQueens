@@ -25,6 +25,8 @@ final class GameBoardViewModel {
     var board: BoardModel
     var placementError: BoardPlacementErrorDescription?
     var gameState: GameState = .notStarted
+    var remainingQueens: Int
+    var movesLeft: Int?
     
     @ObservationIgnored private(set) var gameController: GameController
     @ObservationIgnored private let boardModelSynchronizer = BoardModelSynchronizer.self
@@ -37,6 +39,8 @@ final class GameBoardViewModel {
     ) {
         self.gameController = gameController
         self.board = boardModelSynchronizer.createSynchronizedBoard(with: gameController)
+        self.remainingQueens = gameController.queensRemaining()
+        self.movesLeft = Self.computeMovesLeft(for: gameController)
     }
     
     func startGame() {
@@ -76,16 +80,14 @@ final class GameBoardViewModel {
     }
     
     var movesLeftTitle: String {
-        guard gameController.game.mode == .hard,
-              let maxActions = gameController.game.maxActions,
-              let movesCounter = gameController.game.movesMade else { return "" }
-        return "Moves left: \(maxActions - movesCounter)"
+        guard let movesLeft else { return "" }
+        return "Moves left: \(movesLeft)"
     }
     
     var boardSize: Int { gameController.boardSize }
     
     var remainingQueensTitle: String {
-        "Remaining queens: \(gameController.queensRemaining())"
+        "Remaining queens: \(remainingQueens)"
     }
     
     private func schedulePlacementErrorClear() {
@@ -113,6 +115,7 @@ final class GameBoardViewModel {
     
     private func synchronizeBoard() {
         board = boardModelSynchronizer.createSynchronizedBoard(with: gameController)
+        refreshCounters()
     }
     
     private func checkGameConditions() {
@@ -126,6 +129,18 @@ final class GameBoardViewModel {
     private func addMoveToCounter() {
         guard gameController.game.mode == .hard else { return }
         gameController.game.movesMade? += 1
+    }
+
+    private func refreshCounters() {
+        remainingQueens = gameController.queensRemaining()
+        movesLeft = Self.computeMovesLeft(for: gameController)
+    }
+
+    private static func computeMovesLeft(for gameController: GameController) -> Int? {
+        guard gameController.game.mode == .hard,
+              let maxActions = gameController.game.maxActions,
+              let movesCounter = gameController.game.movesMade else { return nil }
+        return maxActions - movesCounter
     }
     
     private func message(for error: BoardPlacementError) -> String {
