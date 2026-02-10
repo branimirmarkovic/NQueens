@@ -121,3 +121,23 @@
 - **Current:** App root and dependency setup work for MVP but were implemented quickly.
 - **Improvement:** Clarify ownership and lifecycles, tighten dependency boundaries, and document initialization and teardown flows.
 - **Why deferred:** Prioritized feature delivery and core architecture validation.
+
+
+---
+
+
+## WHY I STOPPED HERE
+
+
+**1. Dark Mode Support**
+- **Why stopped**: The theme system exists but needs a full color audit and contrast testing
+- **Next step**: Define dark palette tokens and update board/error/queen colors
+- **Risk**: Poor contrast can make the board unreadable
+- **When to add**: After initial UX feedback or App Store review notes
+
+**2. Sound Effects**
+- **Why stopped**: Time prioritization; low ROI vs
+implementation effort
+- **Next step**: AVFoundation + asset creation (2-3 hours)
+- **Risk**: Annoying if overused; needs volume settings
+- **When to add**: After core features validated with users
