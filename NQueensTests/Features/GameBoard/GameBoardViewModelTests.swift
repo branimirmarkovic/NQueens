@@ -21,7 +21,7 @@ struct GameBoardViewModelTests: Sendable {
         
         sut.startGame()
         
-        #expect(sut.placementError?.error == .uknown)
+        #expect(sut.placementError?.error == .unknown)
     }
     
     @Test func tap_whenToggleThrows_setsPlacementError() async throws {
@@ -56,7 +56,7 @@ struct GameBoardViewModelTests: Sendable {
         
         sut.tap(at: position)
         
-        #expect(sut.placementError?.error == .uknown)
+        #expect(sut.placementError?.error == .unknown)
         #expect(sut.placementError?.message == "An unknown error occurred.")
     }
     
@@ -142,7 +142,7 @@ struct GameBoardViewModelTests: Sendable {
         
         sut.resetGame()
         
-        #expect(sut.placementError?.error == .uknown)
+        #expect(sut.placementError?.error == .unknown)
     }
     
     @Test func constants_haveExpectedValues() async throws {

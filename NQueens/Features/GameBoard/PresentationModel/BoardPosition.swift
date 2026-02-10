@@ -26,5 +26,5 @@ enum BoardPlacementError: Error, Equatable {
     case positionOccupied
     case conflicts
     case noQueensRemaining
-    case uknown
+    case unknown
 }

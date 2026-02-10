@@ -52,7 +52,7 @@ final class GameBoardViewModel {
             synchronizeBoard()
             gameState = .ongoing
         } catch {
-            setPlacementError(.uknown)
+            setPlacementError(.unknown)
         }
     }
     
@@ -65,7 +65,7 @@ final class GameBoardViewModel {
         } catch let error as BoardPlacementError {
             setPlacementError(error)
         } catch {
-            setPlacementError(.uknown)
+            setPlacementError(.unknown)
         }
     }
     
@@ -77,7 +77,7 @@ final class GameBoardViewModel {
             synchronizeBoard()
             gameState = .ongoing
         } catch {
-            setPlacementError(.uknown)
+            setPlacementError(.unknown)
         }
     }
     
@@ -160,7 +160,7 @@ final class GameBoardViewModel {
             return "Placing a queen here would cause a conflict with another queen."
         case .noQueensRemaining:
             return "No queens remaining to place."
-        case .uknown:
+        case .unknown:
             return "An unknown error occurred."
         }
     }
