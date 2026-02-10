@@ -16,16 +16,9 @@ struct StartScreenView: View {
             setupSection()
             difficultySection()
             descriptionSection()
-            errorSection()
             startSection()
         }
         .navigationTitle(GameCreationViewModel.Constants.title)
-        .onChange(of: viewModel.game.size) { _, _ in
-            viewModel.updateActionLimit()
-        }
-        .onChange(of: viewModel.game.mode) { _, _ in
-            viewModel.updateActionLimit()
-        }
     }
 
     @ViewBuilder
@@ -33,7 +26,7 @@ struct StartScreenView: View {
         Section(GameCreationViewModel.Constants.setupSectionTitle) {
             Picker(GameCreationViewModel.Constants.boardSizeLabel, selection: $viewModel.game.size) {
                 ForEach(viewModel.availableSizes, id: \.self) { size in
-                    Text(sizeRowText(size)).tag(size)
+                    Text(viewModel.text(for: size)).tag(size)
                 }
             }
             .pickerStyle(.menu)
@@ -72,16 +65,6 @@ struct StartScreenView: View {
     }
 
     @ViewBuilder
-    private func errorSection() -> some View {
-        if let error = viewModel.error {
-            Section(GameCreationViewModel.Constants.errorSectionTitle) {
-                Text(String(describing: error))
-                    .foregroundStyle(.red)
-            }
-        }
-    }
-
-    @ViewBuilder
     private func startSection() -> some View {
         Section {
             Button(action: {
@@ -93,10 +76,6 @@ struct StartScreenView: View {
             .buttonStyle(.borderedProminent)
             .disabled(viewModel.game.size < 4)
         }
-    }
-
-    private func sizeRowText(_ size: Int) -> String {
-        "\(size) x \(size)"
     }
 }
 

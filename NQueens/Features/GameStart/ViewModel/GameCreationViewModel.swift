@@ -11,31 +11,20 @@ final class GameCreationViewModel {
         static let difficultySectionTitle = "Difficulty"
         static let difficultyLabel = "Mode"
         static let descriptionSectionTitle = "Description"
-        static let errorSectionTitle = "Error"
         static let startButtonTitle = "Start"
     }
     
-    var game: NQueenGame
-    var gameStarted: Bool = false
-    var error: Error?
+    var game: NQueenGame {
+        didSet {
+            updateActionLimit()
+        }
+    }
 
     init() {
         let defaultSize = 4
         let defaultMode: GameMode = .easy
         let defaultMaxActions = GameCreationViewModel.actionLimit(for: defaultSize, mode: defaultMode)
         self.game = .init(id: .init(), size: defaultSize, queens: [], mode: defaultMode, maxActions: defaultMaxActions)
-    }
-    
-    var availableSizes: [Int] {
-        Array(4...25)
-    }
-    
-    var availableModes: [GameMode] {
-        GameMode.allCases
-    }
-    
-    func updateActionLimit() {
-        game.maxActions = Self.actionLimit(for: game.size, mode: game.mode)
     }
     
     func modeTitle(_ mode: GameMode) -> String {
@@ -47,6 +36,10 @@ final class GameCreationViewModel {
         case .hard:
             return "Hard"
         }
+    }
+    
+    func text(for size: Int) -> String {
+        "\(size)×\(size)"
     }
     
     func modeDescription(_ mode: GameMode) -> String {
@@ -66,6 +59,18 @@ final class GameCreationViewModel {
     
     func descriptionText() -> String {
         "Place \(game.size) queens on an \(game.size)×\(game.size) chessboard so that no two queens threaten each other. Queens cannot share the same row, column, or diagonal."
+    }
+    
+    var availableSizes: [Int] {
+        Array(4...25)
+    }
+    
+    var availableModes: [GameMode] {
+        GameMode.allCases
+    }
+    
+    private func updateActionLimit() {
+        game.maxActions = Self.actionLimit(for: game.size, mode: game.mode)
     }
     
     private static func actionLimit(for size: Int, mode: GameMode) -> Int? {

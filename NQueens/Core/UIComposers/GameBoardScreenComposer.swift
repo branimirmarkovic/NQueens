@@ -10,8 +10,8 @@ struct GameBoardScreenComposer {
     private init() {}
     
     static func compose(game: NQueenGame) -> some View {
-        let gameEngine = NQueenEngineController(game: game)
-        let viewModel = GameBoardViewModel(gameEngine: gameEngine)
+        let gameController = NQueenEngineController(game: game)
+        let viewModel = GameBoardViewModel(gameController: gameController)
         return GameBoardView(viewModel: viewModel)
     }
 }
