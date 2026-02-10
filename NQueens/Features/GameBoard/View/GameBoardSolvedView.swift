@@ -37,4 +37,10 @@ struct GameBoardSolvedView: View {
     }
 }
 
+#Preview {
+    let gameController = NQueenEngineController(game: .init(id: .init(), size: 5, queens: [], mode: .easy))
+    let viewModel = GameBoardViewModel(gameController:gameController)
+    GameBoardSolvedView(viewModel: viewModel)
+}
+
 

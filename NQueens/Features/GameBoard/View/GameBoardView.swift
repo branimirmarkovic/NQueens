@@ -190,7 +190,7 @@ struct GameBoardView: View {
 }
 
 #Preview {
-//    let engine = GameEngineController()
-//    let viewModel = GameBoardViewModel(gameEngine: engine, boardSize: 8)
-//    GameBoardView(viewModel: viewModel)
+    let gameController = NQueenEngineController(game: .init(id: .init(), size: 5, queens: [], mode: .easy))
+    let viewModel = GameBoardViewModel(gameController:gameController)
+    GameBoardView(viewModel: viewModel)
 }
