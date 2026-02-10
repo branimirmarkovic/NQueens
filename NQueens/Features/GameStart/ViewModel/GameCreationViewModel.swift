@@ -56,7 +56,7 @@ final class GameCreationViewModel {
     }
     
     var availableSizes: [Int] {
-        Array(4...25)
+        Array(4...15)
     }
     
     var availableModes: [GameMode] {
