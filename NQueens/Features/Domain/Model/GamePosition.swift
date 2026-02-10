@@ -18,6 +18,7 @@ struct NQueenGame: Hashable, Equatable {
     var queens: [GamePosition]
     var mode: GameMode
     var maxActions: Int?
+    var movesLeft: Int?
 }
 
 enum GameMode: CaseIterable {

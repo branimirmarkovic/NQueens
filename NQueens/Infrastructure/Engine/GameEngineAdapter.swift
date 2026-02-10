@@ -7,7 +7,7 @@
 
 import NQueenEngine
 
-final class GameEngineController: GameController {
+final class NQueenEngineController: GameController {
     private enum ControllerError: Error {
         case engineNotInitialized
         case invalidSize

@@ -37,8 +37,4 @@ struct GameBoardSolvedView: View {
     }
 }
 
-struct GameBoardSolvedScreenComposer {
-    static func compose(viewModel: GameBoardViewModel) -> some View {
-        GameBoardSolvedView(viewModel: viewModel)
-    }
-}
+
