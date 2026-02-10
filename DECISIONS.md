@@ -3,7 +3,7 @@
 ### Board Size Range
 - **Why:** Larger boards reduce readability and touch precision on small screens and increase the computational cost of move validation, hints, and future solving features. This can lead to slower engine responses, higher CPU and battery usage, and more complex state management, including concurrency and timing concerns. Smaller boards are also easier to support initially, especially if an auto-solver is introduced later, since solver complexity grows non-linearly with board size.
 - **Alternative:** Allow a wide board-size range (e.g., 4–20).
-- **Decision:** Limit the range to small/medium sizes for the MVP (e.g., 4–10). This keeps the UI readable, ensures fast and predictable engine responses, reduces CPU and battery impact, and avoids unnecessary complexity in state management and future solver optimization.
+- **Decision:** Limit the range to small/medium sizes for the MVP (e.g., 4–12). This keeps the UI readable, ensures fast and predictable engine responses, reduces CPU and battery impact, and avoids unnecessary complexity in state management and future solver optimization.
 
 ### Difficulty Modes (Easy/Medium/Hard)
 - **Why:** Players have different skill levels, and the puzzle benefits from progressive difficulty. Easy should prevent conflicts, Medium can allow conflicts with visual feedback, and Hard removes hints to emphasize strategy.
