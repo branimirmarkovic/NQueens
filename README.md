@@ -22,7 +22,7 @@ In Xcode: **Product → Test** (`Cmd+U`).
   The app follows the MVVM pattern to separate view rendering from state management and business logic. Views stay lightweight and declarative, while view models coordinate with the engine and expose UI-ready state.
 
 - **Testability as a priority**  
-  Key parts of the system are covered with unit tests, especially the backtracking solver and game state transitions. This ensures correctness of the core algorithm and provides confidence when making changes.
+  Key parts of the system are covered with unit tests, especially the game engine and game state transitions. This ensures correctness of the core algorithm and provides confidence when making changes.
 
 
 For a full rationale and trade‑offs, see [`DECISIONS.md`](DECISIONS.md).
