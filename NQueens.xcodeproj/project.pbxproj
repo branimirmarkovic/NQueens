@@ -19,20 +19,12 @@
 			remoteGlobalIDString = 22EE3C492F35200F00AB9441;
 			remoteInfo = NQueens;
 		};
-		22EE3C622F35201000AB9441 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 22EE3C422F35200F00AB9441 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 22EE3C492F35200F00AB9441;
-			remoteInfo = NQueens;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		2207D01E2F3A8ECB00CD2D6A /* NQueensTheme */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = NQueensTheme; path = ../NQueensTheme; sourceTree = SOURCE_ROOT; };
 		22EE3C4A2F35200F00AB9441 /* NQueens.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NQueens.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		22EE3C572F35201000AB9441 /* NQueensTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NQueensTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		22EE3C612F35201000AB9441 /* NQueensUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NQueensUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		22EE3C782F3522DB00AB9441 /* NQueenEngine */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = NQueenEngine; path = ../NQueenEngine; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
@@ -66,13 +58,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		22EE3C5E2F35201000AB9441 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -100,7 +85,6 @@
 			children = (
 				22EE3C4A2F35200F00AB9441 /* NQueens.app */,
 				22EE3C572F35201000AB9441 /* NQueensTests.xctest */,
-				22EE3C612F35201000AB9441 /* NQueensUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -155,26 +139,6 @@
 			productReference = 22EE3C572F35201000AB9441 /* NQueensTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		22EE3C602F35201000AB9441 /* NQueensUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 22EE3C712F35201000AB9441 /* Build configuration list for PBXNativeTarget "NQueensUITests" */;
-			buildPhases = (
-				22EE3C5D2F35201000AB9441 /* Sources */,
-				22EE3C5E2F35201000AB9441 /* Frameworks */,
-				22EE3C5F2F35201000AB9441 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				22EE3C632F35201000AB9441 /* PBXTargetDependency */,
-			);
-			name = NQueensUITests;
-			packageProductDependencies = (
-			);
-			productName = NQueensUITests;
-			productReference = 22EE3C612F35201000AB9441 /* NQueensUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -189,10 +153,6 @@
 						CreatedOnToolsVersion = 26.2;
 					};
 					22EE3C562F35201000AB9441 = {
-						CreatedOnToolsVersion = 26.2;
-						TestTargetID = 22EE3C492F35200F00AB9441;
-					};
-					22EE3C602F35201000AB9441 = {
 						CreatedOnToolsVersion = 26.2;
 						TestTargetID = 22EE3C492F35200F00AB9441;
 					};
@@ -214,7 +174,6 @@
 			targets = (
 				22EE3C492F35200F00AB9441 /* NQueens */,
 				22EE3C562F35201000AB9441 /* NQueensTests */,
-				22EE3C602F35201000AB9441 /* NQueensUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -228,13 +187,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		22EE3C552F35201000AB9441 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		22EE3C5F2F35201000AB9441 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -258,13 +210,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		22EE3C5D2F35201000AB9441 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -272,11 +217,6 @@
 			isa = PBXTargetDependency;
 			target = 22EE3C492F35200F00AB9441 /* NQueens */;
 			targetProxy = 22EE3C582F35201000AB9441 /* PBXContainerItemProxy */;
-		};
-		22EE3C632F35201000AB9441 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 22EE3C492F35200F00AB9441 /* NQueens */;
-			targetProxy = 22EE3C622F35201000AB9441 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -510,46 +450,6 @@
 			};
 			name = Release;
 		};
-		22EE3C722F35201000AB9441 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = BJDJ2WV87J;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = private.NQueensUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				STRING_CATALOG_GENERATE_SYMBOLS = NO;
-				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = NQueens;
-			};
-			name = Debug;
-		};
-		22EE3C732F35201000AB9441 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = BJDJ2WV87J;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = private.NQueensUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				STRING_CATALOG_GENERATE_SYMBOLS = NO;
-				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = NQueens;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -576,15 +476,6 @@
 			buildConfigurations = (
 				22EE3C6F2F35201000AB9441 /* Debug */,
 				22EE3C702F35201000AB9441 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		22EE3C712F35201000AB9441 /* Build configuration list for PBXNativeTarget "NQueensUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				22EE3C722F35201000AB9441 /* Debug */,
-				22EE3C732F35201000AB9441 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
