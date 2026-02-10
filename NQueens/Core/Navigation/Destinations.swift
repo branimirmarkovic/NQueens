@@ -15,16 +15,16 @@ enum SheetDestination: Identifiable, Hashable, Equatable {
     var id: String {
         switch self {
         case .gameEnded(let viewModel):
-            viewModel.gameEngine.game.id.uuidString
+            viewModel.gameController.game.id.uuidString
         }
     }
 }
 
 extension GameBoardViewModel: Identifiable, Equatable, Hashable {
     static func == (lhs: GameBoardViewModel, rhs: GameBoardViewModel) -> Bool {
-        lhs.gameEngine.game == rhs.gameEngine.game
+        lhs.gameController.game == rhs.gameController.game
     }
     func hash(into hasher: inout Hasher) {
-        hasher.combine(gameEngine.game.id)
+        hasher.combine(gameController.game.id)
     }
 }

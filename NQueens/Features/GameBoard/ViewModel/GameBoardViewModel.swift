@@ -41,16 +41,16 @@ final class GameBoardViewModel {
     var gameSolved: Bool = false
     var gameOver: Bool = false
     @ObservationIgnored private var hasStarted = false
-    @ObservationIgnored private(set) var gameEngine: GameController
+    @ObservationIgnored private(set) var gameController: GameController
     @ObservationIgnored private var errorResetTask: Task<Void, Never>?
     @ObservationIgnored private var errorToken = UUID()
     
     init(
-        gameEngine: GameController,
+        gameController: GameController,
     ) {
-        self.gameEngine = gameEngine
-        self.board = BoardMapper.createBoard(from: gameEngine)
-        self.remainingQueens = gameEngine.queensRemaining()
+        self.gameController = gameController
+        self.board = BoardMapper.createBoard(from: gameController)
+        self.remainingQueens = gameController.queensRemaining()
     }
     
     func startGame() {
@@ -58,7 +58,7 @@ final class GameBoardViewModel {
         do {
             resetSolvedState()
             clearPlacementError()
-            try gameEngine.startGame()
+            try gameController.startGame()
             refresh()
             hasStarted = true
         } catch {
@@ -68,7 +68,7 @@ final class GameBoardViewModel {
     
     func tap(at position: BoardPosition) {
         do {
-            try gameEngine.toggle(position.toGamePosition())
+            try gameController.toggle(position.toGamePosition())
             addMoveToCounter()
             refresh()
             checkIfSolved()
@@ -84,7 +84,7 @@ final class GameBoardViewModel {
         do {
             resetSolvedState()
             clearPlacementError()
-            try gameEngine.resetGame()
+            try gameController.resetGame()
             refresh()
         } catch {
             setPlacementError(.uknown)
@@ -92,15 +92,15 @@ final class GameBoardViewModel {
     }
     
     func refresh() {
-        let availablePositions = Set(gameEngine.availablePositions())
-        let conflictingPositions = Set(gameEngine.conflictingPositions())
-        remainingQueens = gameEngine.queensRemaining()
+        let availablePositions = Set(gameController.availablePositions())
+        let conflictingPositions = Set(gameController.conflictingPositions())
+        remainingQueens = gameController.queensRemaining()
 
-        var newBoard = BoardMapper.createBoard(from: gameEngine)
-        if gameEngine.game.mode == .easy {
+        var newBoard = BoardMapper.createBoard(from: gameController)
+        if gameController.game.mode == .easy {
             applyHighlights(to: &newBoard, available: availablePositions)
         }
-        if gameEngine.game.mode == .medium {
+        if gameController.game.mode == .medium {
             applyConflicts(to: &newBoard, conflicts: conflictingPositions)
         }
 
@@ -132,8 +132,8 @@ final class GameBoardViewModel {
     }
     
     private func checkIfSolved() {
-        let conflictingPositions = Set(gameEngine.conflictingPositions())
-        let isSolved = remainingQueens == 0 && gameEngine.boardSize > 0 && conflictingPositions.isEmpty
+        let conflictingPositions = Set(gameController.conflictingPositions())
+        let isSolved = remainingQueens == 0 && gameController.boardSize > 0 && conflictingPositions.isEmpty
         if isSolved && gameSolved == false {
             gameSolved = true
         } else if isSolved == false {
@@ -142,17 +142,17 @@ final class GameBoardViewModel {
     }
     
     private func checkIfGameOver() {
-        guard gameEngine.game.mode == .hard,
-              let maxActions = gameEngine.game.maxActions,
-              let movesCounter = gameEngine.game.movesMade else { return }
+        guard gameController.game.mode == .hard,
+              let maxActions = gameController.game.maxActions,
+              let movesCounter = gameController.game.movesMade else { return }
         if movesCounter >  maxActions {
             gameOver = true
         }
     }
     
     private func addMoveToCounter() {
-        guard gameEngine.game.mode == .hard else { return }
-        gameEngine.game.movesMade? += 1
+        guard gameController.game.mode == .hard else { return }
+        gameController.game.movesMade? += 1
     }
     
     private func resetSolvedState() {
@@ -161,9 +161,9 @@ final class GameBoardViewModel {
     }
     
     var movesLeft: Int? {
-        guard gameEngine.game.mode == .hard,
-              let maxActions = gameEngine.game.maxActions,
-              let movesCounter = gameEngine.game.movesMade else { return nil }
+        guard gameController.game.mode == .hard,
+              let maxActions = gameController.game.maxActions,
+              let movesCounter = gameController.game.movesMade else { return nil }
         return max(0, maxActions - movesCounter)
     }
 
@@ -205,7 +205,7 @@ final class GameBoardViewModel {
         }
     }
     
-    var boardSize: Int { gameEngine.boardSize }
+    var boardSize: Int { gameController.boardSize }
 
     
     func remainingQueens(_ count: Int) -> String { "Remaining queens: \(count)" }

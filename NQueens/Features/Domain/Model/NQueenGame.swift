@@ -7,11 +7,6 @@
 
 import Foundation
 
-struct GamePosition: Hashable, Equatable {
-    let row: Int
-    let column: Int
-}
-
 struct NQueenGame: Hashable, Equatable {
     let id: UUID
     var size: Int
@@ -19,6 +14,11 @@ struct NQueenGame: Hashable, Equatable {
     var mode: GameMode
     var maxActions: Int?
     var movesMade: Int?
+}
+
+struct GamePosition: Hashable, Equatable {
+    let row: Int
+    let column: Int
 }
 
 enum GameMode: CaseIterable {

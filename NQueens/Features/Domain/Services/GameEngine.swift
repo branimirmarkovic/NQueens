@@ -6,9 +6,9 @@
 //
 
 protocol GameController {
-    
     var boardSize: Int { get }
     var game: NQueenGame { get set }
+    
     func toggle(_ position: GamePosition) throws
     func availablePositions() -> [GamePosition]
     func conflictingPositions() -> [GamePosition] 
