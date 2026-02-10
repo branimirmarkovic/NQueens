@@ -7,6 +7,8 @@
 import SwiftUI
 
 struct GameBoardSolvedScreenComposer {
+    private init() {}
+    
     static func compose(viewModel: GameBoardViewModel) -> some View {
         GameBoardSolvedView(viewModel: viewModel)
     }

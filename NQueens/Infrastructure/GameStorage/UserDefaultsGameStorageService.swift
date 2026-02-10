@@ -18,7 +18,7 @@ struct UserDefaultsGameStorageService {
         let boardSize: Int
         let queens: [StoredPosition]
         let difficulty: StoredDifficulty
-        let movesLeft: Int?
+        let movesMade: Int?
         let maxActions: Int?
     }
     
@@ -89,7 +89,7 @@ extension UserDefaultsGameStorageService.StoredGame {
         self.boardSize = game.size
         self.queens = game.queens.map { UserDefaultsGameStorageService.StoredPosition(from: $0) }
         self.difficulty = UserDefaultsGameStorageService.StoredDifficulty(from: game.mode)
-        self.movesLeft = game.movesLeft
+        self.movesMade = game.movesMade
         self.maxActions = game.maxActions
         self.id = game.id
     }
@@ -101,7 +101,7 @@ extension UserDefaultsGameStorageService.StoredGame {
             queens: queens.map { $0.toGamePosition() },
             mode: difficulty.toGameMode(),
             maxActions: maxActions,
-            movesLeft: movesLeft
+            movesMade: movesMade
         )
     }
 }

@@ -12,6 +12,8 @@ import NQueenEngine
 final class ApplicationEnvironment {
     static let shared = ApplicationEnvironment()
     
+    lazy var userDefaultsStorage: UserDefaultsGameStorageService = UserDefaultsGameStorageService()
+    
     private init() {}
 }
 

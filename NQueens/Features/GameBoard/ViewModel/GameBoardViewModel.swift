@@ -42,7 +42,6 @@ final class GameBoardViewModel {
     var gameOver: Bool = false
     @ObservationIgnored private var hasStarted = false
     @ObservationIgnored private(set) var gameEngine: GameController
-    @ObservationIgnored private var movesCounter: Int = 0
     @ObservationIgnored private var errorResetTask: Task<Void, Never>?
     @ObservationIgnored private var errorToken = UUID()
     
@@ -70,7 +69,7 @@ final class GameBoardViewModel {
     func tap(at position: BoardPosition) {
         do {
             try gameEngine.toggle(position.toGamePosition())
-            movesCounter += 1
+            addMoveToCounter()
             refresh()
             checkIfSolved()
             checkIfGameOver()
@@ -85,7 +84,6 @@ final class GameBoardViewModel {
         do {
             resetSolvedState()
             clearPlacementError()
-            movesCounter = 0
             try gameEngine.resetGame()
             refresh()
         } catch {
@@ -145,20 +143,27 @@ final class GameBoardViewModel {
     
     private func checkIfGameOver() {
         guard gameEngine.game.mode == .hard,
-        let maxActions = gameEngine.game.maxActions else { return }
+              let maxActions = gameEngine.game.maxActions,
+              let movesCounter = gameEngine.game.movesMade else { return }
         if movesCounter >  maxActions {
             gameOver = true
         }
+    }
+    
+    private func addMoveToCounter() {
+        guard gameEngine.game.mode == .hard else { return }
+        gameEngine.game.movesMade? += 1
     }
     
     private func resetSolvedState() {
         gameSolved = false
         gameOver = false
     }
-
+    
     var movesLeft: Int? {
         guard gameEngine.game.mode == .hard,
-              let maxActions = gameEngine.game.maxActions else { return nil }
+              let maxActions = gameEngine.game.maxActions,
+              let movesCounter = gameEngine.game.movesMade else { return nil }
         return max(0, maxActions - movesCounter)
     }
 

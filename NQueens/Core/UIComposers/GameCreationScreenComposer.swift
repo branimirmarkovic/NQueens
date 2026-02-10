@@ -9,7 +9,6 @@ import SwiftUI
 struct GameCreationScreenComposer {
     private init() {}
     
-    
     static func compose() -> some View {
         let viewModel = GameCreationViewModel()
         let view = StartScreenView(viewModel: viewModel)
