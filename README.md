@@ -55,6 +55,7 @@ continue)
 - Color blind mode (pattern overlay instead of red)
 - Dynamic Type support
 - Haptic feedback on queen placement
+- Dark Mode support
 ### Security & Privacy
 - Encrypt best times if syncing to iCloud
 - GDPR-compliant analytics opt-in
