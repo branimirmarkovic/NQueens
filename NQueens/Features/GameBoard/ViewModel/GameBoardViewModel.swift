@@ -48,6 +48,7 @@ final class GameBoardViewModel {
         do {
             clearPlacementError()
             try gameController.startGame()
+            ensureMovesCounterInitialized()
             synchronizeBoard()
             gameState = .ongoing
         } catch {
@@ -72,6 +73,7 @@ final class GameBoardViewModel {
         do {
             clearPlacementError()
             try gameController.resetGame()
+            ensureMovesCounterInitialized()
             synchronizeBoard()
             gameState = .ongoing
         } catch {
@@ -129,6 +131,11 @@ final class GameBoardViewModel {
     private func addMoveToCounter() {
         guard gameController.game.mode == .hard else { return }
         gameController.game.movesMade? += 1
+    }
+
+    private func ensureMovesCounterInitialized() {
+        guard gameController.game.mode == .hard else { return }
+        gameController.game.movesMade = 0
     }
 
     private func refreshCounters() {
