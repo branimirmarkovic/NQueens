@@ -88,7 +88,7 @@ struct GameCreationViewModelTests: Sendable {
         let sut = GameCreationViewModel()
         let sizes = sut.availableSizes
         
-        #expect(sizes == Array(4...15))
+        #expect(sizes == Array(4...10))
     }
     
     @Test func availableModes_returnsAllGameModes() async throws {
