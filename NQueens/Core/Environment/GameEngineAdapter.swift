@@ -27,9 +27,9 @@ final class GameEngineController: GameController {
     
     func toggle(_ position: GamePosition) throws {
            guard let engine else { throw ControllerError.engineNotInitialized }
-
            do {
-               try engine.toggle(.init(row: position.row, column: position.column))
+               let shouldCheckConflict = game.mode == .easy
+               try engine.toggle(.init(row: position.row, column: position.column), checkConflict: shouldCheckConflict)
            } catch let error as NQueenEngine.PlacementError {
                throw BoardPlacementError(from: error)
            }

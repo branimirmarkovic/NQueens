@@ -19,17 +19,30 @@ final class GameBoardViewModel {
         static let placementErrorTitle = "Placement error"
         
         static let winingTitle = "Congratulations!"
-        static let message = "You solved the puzzle."
+        static let loosingTitle = "Game Over"
+        
+        static let loosingMessage = "You have exceeded the maximum number of moves allowed."
+        static let winningMessage = "You solved the puzzle."
         static let playAgainTitle = "Play again"
         static let chooseBoardTitle = "Choose different board"
+        
+        static func gameEndTitle(gameSolved: Bool) -> String {
+            gameSolved ? winingTitle : loosingTitle
+        }
+        
+        static func gameEndMessage(gameSolved: Bool) -> String {
+            gameSolved ? winningMessage : loosingMessage
+        }
     }
     
     var board: [[BoardPosition]]
     var remainingQueens: Int
     var placementError: BoardPlacementError?
     var gameSolved: Bool = false
-    private var hasStarted = false
-    private(set) var gameEngine: GameController
+    var gameOver: Bool = false
+    @ObservationIgnored private var hasStarted = false
+    @ObservationIgnored private(set) var gameEngine: GameController
+    @ObservationIgnored private var movesCounter: Int = 0
     
     init(
         gameEngine: GameController,
@@ -54,8 +67,10 @@ final class GameBoardViewModel {
     func tap(at position: BoardPosition) {
         do {
             try gameEngine.toggle(position.toGamePosition())
+            movesCounter += 1
             refresh()
             checkIfSolved()
+            checkIfGameOver()
         } catch let error as BoardPlacementError {
             self.placementError = error
         } catch {
@@ -79,8 +94,12 @@ final class GameBoardViewModel {
         remainingQueens = gameEngine.queensRemaining()
 
         var newBoard = BoardMapper.createBoard(from: gameEngine)
-        applyHighlights(to: &newBoard, available: availablePositions)
-        applyConflicts(to: &newBoard, conflicts: conflictingPositions)
+        if gameEngine.game.mode == .easy {
+            applyHighlights(to: &newBoard, available: availablePositions)
+        }
+        if gameEngine.game.mode == .medium {
+            applyConflicts(to: &newBoard, conflicts: conflictingPositions)
+        }
 
         board = newBoard
     }
@@ -110,7 +129,8 @@ final class GameBoardViewModel {
     }
     
     private func checkIfSolved() {
-        let isSolved = remainingQueens == 0 && gameEngine.boardSize > 0
+        let conflictingPositions = Set(gameEngine.conflictingPositions())
+        let isSolved = remainingQueens == 0 && gameEngine.boardSize > 0 && conflictingPositions.isEmpty
         if isSolved && gameSolved == false {
             gameSolved = true
         } else if isSolved == false {
@@ -118,8 +138,17 @@ final class GameBoardViewModel {
         }
     }
     
+    private func checkIfGameOver() {
+        guard gameEngine.game.mode == .hard,
+        let maxActions = gameEngine.game.maxActions else { return }
+        if movesCounter >  maxActions {
+            gameOver = true
+        }
+    }
+    
     private func resetSolvedState() {
         gameSolved = false
+        gameOver = false
     }
     
     func message(for error: BoardPlacementError) -> String {

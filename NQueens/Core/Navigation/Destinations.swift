@@ -11,10 +11,10 @@ enum PushDestination: Hashable, Equatable {
 }
 
 enum SheetDestination: Identifiable, Hashable, Equatable {
-    case gameWinner(viewModel: GameBoardViewModel)
+    case gameEnded(viewModel: GameBoardViewModel)
     var id: String {
         switch self {
-        case .gameWinner(let viewModel):
+        case .gameEnded(let viewModel):
             viewModel.gameEngine.game.id.uuidString
         }
     }

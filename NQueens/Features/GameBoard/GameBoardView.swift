@@ -32,7 +32,12 @@ struct GameBoardView: View {
         .navigationBarTitleDisplayMode(.inline)
         .onChange(of: viewModel.gameSolved) { oldValue, newValue in
             if viewModel.gameSolved {
-                coordinator.presentSheet(.gameWinner(viewModel: viewModel))
+                coordinator.presentSheet(.gameEnded(viewModel: viewModel))
+            }
+        }
+        .onChange(of: viewModel.gameOver) { oldValue, newValue in
+            if viewModel.gameOver {
+                coordinator.presentSheet(.gameEnded(viewModel: viewModel))
             }
         }
     }
