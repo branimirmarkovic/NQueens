@@ -144,12 +144,6 @@ final class GameBoardViewModel {
     }
 }
 
-extension BoardPosition {
-    func toGamePosition() -> GamePosition {
-        .init(row: row, column: column)
-    }
-}
-
 extension GameBoardViewModel {
     enum Constants {
         static let title = "Board"
@@ -172,5 +166,11 @@ extension GameBoardViewModel {
         static func gameEndMessage(gameSolved: Bool) -> String {
             gameSolved ? winningMessage : loosingMessage
         }
+    }
+}
+
+extension BoardPosition {
+    func toGamePosition() -> GamePosition {
+        .init(row: row, column: column)
     }
 }
