@@ -120,6 +120,18 @@ struct EngineTests: Sendable {
 
         #expect(sut.board.queens.isEmpty)
     }
+    
+    @Test func remove_existingPosition_restoresAvailablePositions() async throws {
+        let size = 4
+        let queen = Position(row: 1, column: 1)
+        let sut = try makeSUT(size: size, queens: [queen])
+        let expected = Set((0..<size).flatMap { row in (0..<size).map { column in Position(row: row, column: column) } })
+        
+        try sut.remove(queen)
+        
+        let result = Set(sut.availablePositions())
+        #expect(result == expected)
+    }
 
     @Test func remove_invalidPosition_noChange() async throws {
         let existing = Position(row: 0, column: 0)

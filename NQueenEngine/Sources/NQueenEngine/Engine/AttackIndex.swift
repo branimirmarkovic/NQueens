@@ -5,7 +5,6 @@
 //  Created by Branimir Markovic on 10. 2. 2026..
 //
 
-
 struct AttackIndex {
     private(set) var occupiedColumns: Set<Int>
     private(set) var occupiedRows: Set<Int>
