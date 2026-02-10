@@ -22,11 +22,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		2207D01E2F3A8ECB00CD2D6A /* NQueensTheme */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = NQueensTheme; path = ../NQueensTheme; sourceTree = SOURCE_ROOT; };
+		2207D01E2F3A8ECB00CD2D6A /* NQueensTheme */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = NQueensTheme; sourceTree = SOURCE_ROOT; };
 		2207D15E2F3AF64900CD2D6A /* DECISIONS.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = DECISIONS.md; sourceTree = "<group>"; };
 		22EE3C4A2F35200F00AB9441 /* NQueens.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NQueens.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		22EE3C572F35201000AB9441 /* NQueensTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NQueensTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		22EE3C782F3522DB00AB9441 /* NQueenEngine */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = NQueenEngine; path = ../NQueenEngine; sourceTree = SOURCE_ROOT; };
+		22EE3C782F3522DB00AB9441 /* NQueenEngine */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = NQueenEngine; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
