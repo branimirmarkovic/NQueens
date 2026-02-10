@@ -43,6 +43,8 @@ final class GameBoardViewModel {
     @ObservationIgnored private var hasStarted = false
     @ObservationIgnored private(set) var gameEngine: GameController
     @ObservationIgnored private var movesCounter: Int = 0
+    @ObservationIgnored private var errorResetTask: Task<Void, Never>?
+    @ObservationIgnored private var errorToken = UUID()
     
     init(
         gameEngine: GameController,
@@ -56,11 +58,12 @@ final class GameBoardViewModel {
         guard hasStarted == false else { return } 
         do {
             resetSolvedState()
+            clearPlacementError()
             try gameEngine.startGame()
             refresh()
             hasStarted = true
         } catch {
-            placementError = .uknown
+            setPlacementError(.uknown)
         }
     }
     
@@ -72,19 +75,21 @@ final class GameBoardViewModel {
             checkIfSolved()
             checkIfGameOver()
         } catch let error as BoardPlacementError {
-            self.placementError = error
+            setPlacementError(error)
         } catch {
-            self.placementError = .uknown
+            setPlacementError(.uknown)
         }
     }
     
     func resetGame() {
         do {
             resetSolvedState()
+            clearPlacementError()
+            movesCounter = 0
             try gameEngine.resetGame()
             refresh()
         } catch {
-            placementError = .uknown
+            setPlacementError(.uknown)
         }
     }
     
@@ -149,6 +154,35 @@ final class GameBoardViewModel {
     private func resetSolvedState() {
         gameSolved = false
         gameOver = false
+    }
+
+    var movesLeft: Int? {
+        guard gameEngine.game.mode == .hard,
+              let maxActions = gameEngine.game.maxActions else { return nil }
+        return max(0, maxActions - movesCounter)
+    }
+
+    private func setPlacementError(_ error: BoardPlacementError) {
+        placementError = error
+        schedulePlacementErrorClear()
+    }
+    
+    private func clearPlacementError() {
+        errorResetTask?.cancel()
+        placementError = nil
+    }
+    
+    private func schedulePlacementErrorClear() {
+        errorResetTask?.cancel()
+        let token = UUID()
+        errorToken = token
+        errorResetTask = Task { [weak self] in
+            try? await Task.sleep(nanoseconds: 2_000_000_000)
+            await MainActor.run {
+                guard let self, self.errorToken == token else { return }
+                self.placementError = nil
+            }
+        }
     }
     
     func message(for error: BoardPlacementError) -> String {

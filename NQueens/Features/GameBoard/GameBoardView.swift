@@ -73,6 +73,12 @@ struct GameBoardView: View {
             Text(viewModel.remainingQueens(viewModel.remainingQueens))
                 .font(.headline)
                 .foregroundStyle(.secondary)
+
+            if let movesLeft = viewModel.movesLeft {
+                Text("Moves left: \(movesLeft)")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+            }
         }
     }
 
@@ -91,6 +97,8 @@ struct GameBoardView: View {
             Text(viewModel.message(for: error))
                 .foregroundColor(AppTheme.Colors.errorText)
                 .multilineTextAlignment(.center)
+                .lineLimit(nil)
+                .fixedSize(horizontal: false, vertical: true)
                 .padding(.vertical, 8)
                 .padding(.horizontal, 12)
                 .frame(maxWidth: .infinity)
