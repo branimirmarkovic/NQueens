@@ -30,11 +30,9 @@ For a full rationale and trade‑offs, see [`DECISIONS.md`](DECISIONS.md).
 ## 📂 Where is the Core Logic?
 
 **Start here:**
-
-1. [NQueenEngine/Sources/NQueenEngine/Model/Board.swift](NQueenEngine/Sources/NQueenEngine/Model/Board.swift) — Pure Swift game state  
-2. [NQueenEngine/Sources/NQueenEngine/Engine/NQueensEngine.swift](NQueenEngine/Sources/NQueenEngine/Engine/NQueensEngine.swift) — Conflict detection algorithm  
-3. [NQueens/Features/GameBoard/ViewModel/GameBoardViewModel.swift](NQueens/Features/GameBoard/ViewModel/GameBoardViewModel.swift) — SwiftUI state manager  
-4. [NQueens/Features/GameBoard/View/GameBoardView.swift](NQueens/Features/GameBoard/View/GameBoardView.swift) — Main UI
+1. [NQueenEngine/Sources/NQueenEngine/Engine/NQueensEngine.swift](NQueenEngine/Sources/NQueenEngine/Engine/NQueensEngine.swift) — Conflict detection algorithm  
+2. [NQueens/Features/GameBoard/ViewModel/GameBoardViewModel.swift](NQueens/Features/GameBoard/ViewModel/GameBoardViewModel.swift) — SwiftUI state manager  
+3. [NQueens/Features/GameBoard/View/GameBoardView.swift](NQueens/Features/GameBoard/View/GameBoardView.swift) — Main UI
 
 
 ## 🏭 If This Went to Production
